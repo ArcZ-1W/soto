@@ -478,6 +478,31 @@ a{color:inherit}
 .locked__fb{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-size:22px;font-weight:800;color:var(--accent-700)}
 .locked__fb[hidden]{display:none}
 
+/* tutorial cara mengisi review (contoh tampilan + highlight) */
+.mock{background:#fff;border:1px solid var(--line-strong);border-radius:16px;padding:14px;display:grid;gap:12px;text-align:left}
+.mock__head{display:flex;align-items:center;gap:10px}
+.mock__dot{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.mock__head b{font-size:14px}
+.mock__head small{display:block;font-size:11.5px;color:var(--muted)}
+.mock__part{border-radius:12px;transition:filter .3s var(--ease),opacity .3s var(--ease)}
+.mock__stars{font-size:30px;letter-spacing:4px;color:#f5b301;text-align:center;padding:6px}
+.mock__text{border:1px solid var(--line-strong);background:var(--surface-2);min-height:72px;padding:10px 12px;font-size:13.5px;color:var(--muted)}
+.mock__post{justify-self:end;background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:9px 24px}
+.mock[data-step="1"] .mock__part:not([data-p="1"]),
+.mock[data-step="2"] .mock__part:not([data-p="2"]),
+.mock[data-step="3"] .mock__part:not([data-p="3"]){filter:blur(2px) grayscale(1);opacity:.4}
+.mock[data-step="1"] [data-p="1"],
+.mock[data-step="2"] [data-p="2"],
+.mock[data-step="3"] [data-p="3"]{animation:mockPulse 1.8s var(--ease) infinite}
+.tut__guide{display:flex;align-items:center;gap:12px;margin:16px 0;text-align:left}
+.tut__cap{font-size:14px;color:var(--ink-2);line-height:1.45;min-height:4em}
+#tutNext{width:100%}
+.tut__skip{width:100%;margin-top:8px;padding:10px;font-size:13px}
+@keyframes mockPulse{
+  0%,100%{box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(22,163,74,.65)}
+  50%{box-shadow:0 0 0 3px #fff,0 0 0 10px rgba(22,163,74,.22)}
+}
+
 @media (max-width:520px){
   .hero h1{font-size:22px}
   .task{flex-wrap:wrap}
@@ -762,6 +787,27 @@ a{color:inherit}
     <div class="modal__action">
       <button class="btn btn-primary btn--enter" id="btnModalNext" type="button">Lanjut</button>
     </div>
+  </div>
+</div>
+
+<!-- ==========================================================
+     TUTORIAL: cara mengisi review (tampil sebelum Google Maps dibuka)
+     ========================================================== -->
+<div class="modal" id="tut" role="dialog" aria-modal="true" aria-labelledby="tutCap">
+  <div class="modal__box">
+    <p class="modal__task">Cara mengisi review · <span id="tutNum">1/3</span></p>
+    <div class="mock" id="mock" data-step="1" aria-hidden="true">
+      <div class="mock__head"><span class="mock__dot">SMN</span><div><b>Soto Mbak Nie</b><small>Contoh tampilan</small></div></div>
+      <div class="mock__part mock__stars" data-p="1">★★★★★</div>
+      <div class="mock__part mock__text" data-p="2">Ceritakan pengalaman Anda…</div>
+      <div class="mock__part mock__post" data-p="3">Kirim</div>
+    </div>
+    <div class="tut__guide">
+      <img class="wiz__img" id="tutImg" src="pointchick.jpg" alt="" width="76" height="76" />
+      <p class="tut__cap" id="tutCap"></p>
+    </div>
+    <button class="btn btn-primary" id="tutNext" type="button">Lanjut</button>
+    <button class="btn btn-ghost tut__skip" id="tutSkip" type="button">Lewati, langsung buka Google Maps</button>
   </div>
 </div>
 
@@ -1124,7 +1170,7 @@ function updateWizard(){
   const onTugas = el.pageTugas.classList.contains('is-active');
   const kind = !state.done.review ? 'review' : (!state.done.tiktok ? 'tiktok' : null);
 
-  if (!state.booted || !onTugas || isLocked() || !kind || el.modal.classList.contains('is-open')){
+  if (!state.booted || !onTugas || isLocked() || !kind || el.modal.classList.contains('is-open') || tut.root.classList.contains('is-open')){
     wizHide();
     return;
   }
@@ -1136,7 +1182,7 @@ function updateWizard(){
     wiz.target = target;
     wiz.step.textContent = kind === 'review' ? 'Langkah 1 dari 2' : 'Langkah 2 dari 2';
     wiz.text.innerHTML = kind === 'review'
-      ? 'Tekan <strong>Review Sekarang</strong>, lalu beri ulasan di Google Maps.'
+      ? 'Tekan <strong>Review Sekarang</strong> untuk melihat cara mengisi, lalu beri ulasan di Google Maps.'
       : 'Terakhir, tekan <strong>Follow Sekarang</strong> untuk follow @' + CONFIG.tiktokHandle + '.';
     target.scrollIntoView({ block: 'center' });
     requestAnimationFrame(() => { wizPlace(); wiz.root.classList.add('is-on'); });
@@ -1245,7 +1291,7 @@ function handleClaimClick(){
 /* ============================================================
    8. EVENT UTAMA
    ============================================================ */
-el.btnReview.addEventListener('click', () => startTask('review'));
+el.btnReview.addEventListener('click', openTutorial);
 el.btnTiktok.addEventListener('click', () => startTask('tiktok'));
 el.btnModalNext.addEventListener('click', closeModal);
 el.modal.addEventListener('click', (e) => { if (e.target === el.modal) closeModal(); });
@@ -1262,7 +1308,47 @@ el.btnExpiredBack.addEventListener('click', () => { location.hash = '#/tugas'; }
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && el.modal.classList.contains('is-open')) closeModal();
+  else if (e.key === 'Escape' && tut.root.classList.contains('is-open')) closeTutorial(false);
 });
+
+/* ============================================================
+   8b. TUTORIAL REVIEW — contoh tampilan + highlight 3 langkah
+       (tampil sebelum Google Maps dibuka di tab baru; isi halaman
+        Google sendiri tidak bisa disorot dari sini)
+   ============================================================ */
+const tut = {
+  root: $('#tut'), mock: $('#mock'), num: $('#tutNum'), cap: $('#tutCap'),
+  next: $('#tutNext'), skip: $('#tutSkip'), img: $('#tutImg'), step: 1
+};
+const TUT_TEXT = [
+  'Ketuk <strong>bintang</strong> sesuai penilaian Anda.',
+  'Tulis pengalaman singkat Anda di <strong>kolom ulasan</strong>.',
+  'Tekan <strong>Kirim</strong> (atau Posting), lalu kembali ke halaman ini.'
+];
+tut.img.addEventListener('error', () => { tut.img.style.display = 'none'; });
+function tutRender(){
+  tut.mock.dataset.step = tut.step;
+  tut.num.textContent = tut.step + '/3';
+  tut.cap.innerHTML = TUT_TEXT[tut.step - 1];
+  tut.next.textContent = tut.step < 3 ? 'Lanjut' : 'Buka Google Maps';
+}
+function openTutorial(){
+  if (state.done.review || isLocked()) return;
+  wizHide();
+  tut.step = 1; tutRender();
+  tut.root.classList.add('is-open');
+  lockScroll(true);
+}
+function closeTutorial(go){
+  tut.root.classList.remove('is-open');
+  lockScroll(false);
+  if (go) startTask('review'); else updateWizard();
+}
+tut.next.addEventListener('click', () => {
+  if (tut.step < 3){ tut.step++; tutRender(); } else closeTutorial(true);
+});
+tut.skip.addEventListener('click', () => closeTutorial(true));
+tut.root.addEventListener('click', (e) => { if (e.target === tut.root) closeTutorial(false); });
 
 /* ============================================================
    9. INIT
