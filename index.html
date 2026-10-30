@@ -143,7 +143,7 @@ h1,h2,p{margin:0}button{font:inherit;color:inherit}svg{display:block}
 
 .vwrap{max-width:500px;margin:0 auto;padding:calc(30px + env(safe-area-inset-top)) 4px 40px;text-align:center}
 .bigwrap{position:relative;width:120px;height:120px;margin:6px auto 14px}
-.bigwrap::before,.bigwrap::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--accent);opacity:0}
+.bigwrap::before,.bigwrap::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--accent);opacity:0;pointer-events:none}
 #pageVoucher.is-active .bigwrap::before{animation:ripple 2.2s ease-out .7s 2}
 #pageVoucher.is-active .bigwrap::after{animation:ripple 2.2s ease-out 1.3s 2}
 .bigcheck{position:relative;width:120px;height:120px;border-radius:50%;box-shadow:var(--raise);cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -182,10 +182,16 @@ h1,h2,p{margin:0}button{font:inherit;color:inherit}svg{display:block}
 .expired__value{font:700 21px var(--serif);color:var(--muted);text-decoration:line-through}
 .expired__state{display:inline-flex;gap:7px;align-items:center;font-weight:700;padding:8px 14px;border-radius:99px;box-shadow:var(--inset)}
 #pageExpired .btn{width:100%}
-#pageLocked{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:#fff;overflow:hidden}
-.locked__img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
-.locked__fb{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font:700 24px var(--serif)}
+/* halaman terkunci: JPG berlatar putih ditaruh di bingkai cekung dalam kartu timbul, supaya putihnya terlihat disengaja */
+#pageLocked{display:flex;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));overflow:hidden}
+.locked__card{width:100%;max-width:560px;max-height:100%;padding:16px;border-radius:28px;background:var(--bg);box-shadow:var(--raise);display:grid;gap:14px}
+.locked__frame{border-radius:20px;box-shadow:var(--inset);padding:10px;background:var(--bg);display:grid;place-items:center;min-height:0}
+.locked__img{display:block;max-width:100%;max-height:calc(100dvh - 190px);width:auto;height:auto;object-fit:contain;background:#fff;border-radius:14px}
+.locked__fb{padding:28px 12px;text-align:center;font:700 24px var(--serif)}
 .locked__fb[hidden]{display:none}
+.locked__note{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border-radius:16px;box-shadow:var(--inset);font-weight:700;color:var(--ink)}
+.locked__note .check{width:22px;height:22px}.locked__note .check circle{stroke-width:6}.locked__note .check path{stroke-width:8}
+#pageLocked.is-active .locked__card{animation:rise .6s var(--ease) both}
 
 /* SPOTLIGHT: hanya tombol aktif yang terang, sisanya gelap + buram */
 .wiz{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
@@ -327,8 +333,13 @@ h1,h2,p{margin:0}button{font:inherit;color:inherit}svg{display:block}
   </main>
 
   <main class="page" id="pageLocked" aria-label="Voucher sudah diklaim">
-    <img class="locked__img" id="lockedImg" src="success.jpg" alt="Voucher sudah diklaim" />
-    <p class="locked__fb" id="lockedFb" hidden>Voucher sudah diklaim</p>
+    <div class="locked__card">
+      <div class="locked__frame">
+        <img class="locked__img" id="lockedImg" src="success.jpg" alt="Voucher sudah diklaim" />
+        <p class="locked__fb" id="lockedFb" hidden>Voucher sudah diklaim</p>
+      </div>
+      <div class="locked__note"><svg class="check draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>Voucher sudah diklaim</div>
+    </div>
   </main>
 </div>
 
@@ -643,7 +654,7 @@ el.btnModalNext.addEventListener('click', closeModal);
 el.modal.addEventListener('click', e => { if (e.target === el.modal) closeModal(); });
 el.btnNext.addEventListener('click', () => { if (!isLocked()) location.hash = '#/voucher'; });
 el.bigCheck.addEventListener('click', handleClaimClick);
-$('#lockedImg').addEventListener('error', () => { $('#lockedFb').hidden = false; });
+$('#lockedImg').addEventListener('error', e => { e.target.style.display = 'none'; $('#lockedFb').hidden = false; });
 el.btnBack.addEventListener('click', () => { location.hash = '#/tugas'; });
 el.btnExpiredBack.addEventListener('click', () => { location.hash = '#/tugas'; });
 document.addEventListener('keydown', e => {
