@@ -35,6 +35,7 @@
   --accent-700:#166534;
   --accent-50:#f0fdf4;
   --accent-100:#dcfce7;
+  --warn:#ea580c;
   --radius-lg:20px;
   --radius:14px;
   --radius-sm:10px;
@@ -67,7 +68,7 @@ a{color:inherit}
 :focus-visible{outline:3px solid rgba(22,163,74,.35);outline-offset:2px;border-radius:8px}
 
 /* ============================================================
-   3. LAYOUT
+   3. LAYOUT (tanpa header / topbar)
    ============================================================ */
 .app{position:relative;min-height:100dvh;overflow:hidden}
 .page{
@@ -76,36 +77,33 @@ a{color:inherit}
   opacity:0;visibility:hidden;transform:translateY(14px) scale(.995);
   transition:opacity .45s var(--ease),transform .45s var(--ease),visibility .45s;
 }
-#pageVoucher{padding-bottom:48px}
+#pageVoucher,#pageExpired{padding-bottom:48px}
 .page.is-active{opacity:1;visibility:visible;transform:none}
 .wrap{max-width:620px;margin:0 auto}
 
 /* ============================================================
-   4. TOPBAR
+   4. LOADING SCREEN (video start.mp4)
    ============================================================ */
-.topbar{
-  position:sticky;top:0;z-index:20;
-  display:flex;align-items:center;gap:12px;
-  padding:14px 16px;
-  background:rgba(255,255,255,.86);
-  backdrop-filter:saturate(180%) blur(12px);
-  border-bottom:1px solid var(--line);
+.boot{
+  position:fixed;inset:0;z-index:100;background:#1f2228;
+  transition:opacity .6s var(--ease),visibility .6s;
 }
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.brand__mark{
-  width:40px;height:40px;flex:0 0 40px;border-radius:12px;
-  background:linear-gradient(145deg,var(--accent) 0%,#34d399 100%);
-  color:#fff;font-weight:800;font-size:14px;letter-spacing:.4px;
-  display:grid;place-items:center;box-shadow:var(--shadow-sm);
+.boot.is-hide{opacity:0;visibility:hidden;pointer-events:none}
+.boot__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.boot__ui{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:48px 24px calc(28px + env(safe-area-inset-bottom));
+  display:grid;gap:10px;justify-items:center;
+  background:linear-gradient(to top,rgba(20,22,26,.72),transparent);
+  color:#fff;font-size:13px;font-weight:600;
 }
-.brand__name{font-weight:700;font-size:15px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand__sub{font-size:12px;color:var(--muted);line-height:1.3}
-.topbar__spacer{flex:1}
+.boot__bar{width:min(240px,70%);height:5px;border-radius:999px;background:rgba(255,255,255,.28);overflow:hidden}
+.boot__bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--accent),#4ade80);transition:width .25s linear}
 
 /* ============================================================
    5. HERO
    ============================================================ */
-.hero{padding:26px 4px 18px;text-align:center}
+.hero{padding:calc(36px + env(safe-area-inset-top)) 4px 18px;text-align:center}
 .hero h1{font-size:26px;font-weight:800;letter-spacing:-.4px;margin:0 0 8px}
 .hero p{color:var(--muted);font-size:14.5px;max-width:44ch;margin:0 auto}
 
@@ -243,13 +241,14 @@ a{color:inherit}
 .hint{font-size:12px;color:var(--muted);text-align:center}
 
 /* ============================================================
-   10. MODAL (kotak tambahan: loading -> centang -> lanjut)
+   10. MODAL (loading -> centang -> lanjut) — latar gelap, blur, abu-abu
    ============================================================ */
 .modal{
   position:fixed;inset:0;z-index:60;
   display:grid;place-items:center;padding:20px;
-  background:rgba(15,23,42,.42);
-  backdrop-filter:blur(3px);
+  background:rgba(40,43,50,.6);
+  -webkit-backdrop-filter:blur(8px) grayscale(.8);
+  backdrop-filter:blur(8px) grayscale(.8);
   opacity:0;visibility:hidden;
   transition:opacity .3s var(--ease),visibility .3s;
 }
@@ -306,7 +305,7 @@ a{color:inherit}
 /* ============================================================
    11. HALAMAN VOUCHER
    ============================================================ */
-.vwrap{max-width:520px;margin:0 auto;padding:26px 4px 40px;text-align:center}
+.vwrap{max-width:520px;margin:0 auto;padding:calc(36px + env(safe-area-inset-top)) 4px 40px;text-align:center}
 .bigcheck{width:112px;height:112px;margin:6px auto 10px}
 .bigcheck circle{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 .bigcheck path{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
@@ -405,7 +404,52 @@ a{color:inherit}
 }
 
 /* ============================================================
-   13. ANIMATIONS
+   13. WIZARD SPOTLIGHT (pointchick.jpg)
+   Latar digelapkan + blur + abu-abu, hanya tombol aktif yang terang.
+   ============================================================ */
+.wiz{
+  position:fixed;inset:0;z-index:50;pointer-events:none;
+  opacity:0;visibility:hidden;
+  transition:opacity .4s var(--ease),visibility .4s;
+}
+.wiz.is-on{opacity:1;visibility:visible}
+.wiz__shade{
+  position:absolute;inset:0;pointer-events:auto;
+  background:rgba(40,43,50,.55);
+  -webkit-backdrop-filter:blur(7px) grayscale(.85) brightness(.75);
+  backdrop-filter:blur(7px) grayscale(.85) brightness(.75);
+}
+.wiz__ring{
+  position:absolute;border-radius:16px;
+  border:2.5px solid #fff;
+  box-shadow:0 0 0 4px rgba(22,163,74,.55),0 0 28px 6px rgba(74,222,128,.5);
+  animation:wizPulse 1.8s var(--ease) infinite;
+}
+.wiz__guide{
+  position:absolute;left:50%;width:min(92vw,360px);
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px 10px 10px;border-radius:18px;
+  background:#fff;box-shadow:var(--shadow-lg);
+  transform:translateX(-50%);
+  transition:top .45s var(--ease);
+}
+.wiz__guide.is-above{transform:translate(-50%,-100%)}
+.wiz__img{
+  flex:0 0 76px;width:76px;height:76px;border-radius:16px;
+  object-fit:cover;background:var(--accent-50);
+  animation:wizBob 1.6s ease-in-out infinite;
+}
+.wiz__step{font-size:12px;font-weight:800;color:var(--accent-700)}
+.wiz__text{font-size:13.5px;color:var(--ink-2);line-height:1.4;margin-top:2px}
+.wiz__arrow{
+  position:absolute;width:16px;height:16px;background:#fff;
+  transform:translateX(-50%) rotate(45deg);
+}
+.wiz__guide.is-above .wiz__arrow{bottom:-7px}
+.wiz__guide.is-below .wiz__arrow{top:-7px}
+
+/* ============================================================
+   14. ANIMATIONS
    ============================================================ */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes tap{
@@ -420,6 +464,10 @@ a{color:inherit}
   0%,100%{box-shadow:0 10px 24px -12px rgba(22,163,74,.9)}
   50%{box-shadow:0 10px 30px -8px rgba(22,163,74,1)}
 }
+@keyframes wizPulse{
+  50%{box-shadow:0 0 0 7px rgba(22,163,74,.3),0 0 36px 10px rgba(74,222,128,.7)}
+}
+@keyframes wizBob{50%{transform:translateY(-4px)}}
 
 @media (max-width:520px){
   .hero h1{font-size:22px}
@@ -435,23 +483,24 @@ a{color:inherit}
 </head>
 
 <body>
+
+<!-- ==========================================================
+     LOADING SCREEN — memutar start.mp4 saat halaman dimuat
+     ========================================================== -->
+<div class="boot" id="boot" role="status" aria-label="Memuat halaman">
+  <video class="boot__video" id="bootVideo" src="start.mp4" autoplay muted playsinline preload="auto"></video>
+  <div class="boot__ui">
+    <div class="boot__bar"><i id="bootFill"></i></div>
+    <span>Memuat…</span>
+  </div>
+</div>
+
 <div class="app">
 
   <!-- ==========================================================
        HALAMAN 1 — TUGAS: REVIEW GOOGLE MAPS + FOLLOW TIKTOK
        ========================================================== -->
   <main class="page is-active" id="pageTugas" aria-labelledby="tugasTitle">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand__mark">SMN</div>
-        <div>
-          <div class="brand__name">Soto Mbak Nie</div>
-          <div class="brand__sub">Program Reward Pelanggan</div>
-        </div>
-      </div>
-      <div class="topbar__spacer"></div>
-    </header>
-
     <div class="wrap">
       <section class="hero">
         <h1 id="tugasTitle">Klaim Voucher Free Es Teh</h1>
@@ -485,7 +534,6 @@ a{color:inherit}
         <!-- Tugas 1: Review Google Maps -->
         <article class="task" id="taskReview">
           <div class="task__icon" aria-hidden="true">
-            <!-- pin + bintang -->
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
               <circle cx="12" cy="10" r="3"/>
@@ -510,7 +558,6 @@ a{color:inherit}
         <!-- Tugas 2: Follow TikTok -->
         <article class="task" id="taskTiktok">
           <div class="task__icon" aria-hidden="true">
-            <!-- not musik (TikTok) -->
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 18V6l10-2v12"/>
               <circle cx="6.5" cy="18" r="2.6"/>
@@ -552,17 +599,6 @@ a{color:inherit}
        HALAMAN 2 — TERIMA VOUCHER
        ========================================================== -->
   <main class="page" id="pageVoucher" aria-labelledby="voucherTitle">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand__mark">SMN</div>
-        <div>
-          <div class="brand__name">Soto Mbak Nie</div>
-          <div class="brand__sub">Program Reward Pelanggan</div>
-        </div>
-      </div>
-      <div class="topbar__spacer"></div>
-    </header>
-
     <div class="wrap">
       <div class="vwrap">
         <!-- Logo centang besar -->
@@ -621,17 +657,6 @@ a{color:inherit}
        HALAMAN 3 — VOUCHER KEDALUWARSA
        ========================================================== -->
   <main class="page" id="pageExpired" aria-labelledby="expiredTitle">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand__mark">SMN</div>
-        <div>
-          <div class="brand__name">Soto Mbak Nie</div>
-          <div class="brand__sub">Program Reward Pelanggan</div>
-        </div>
-      </div>
-      <div class="topbar__spacer"></div>
-    </header>
-
     <div class="wrap">
       <div class="vwrap">
         <div class="expired__icon" aria-hidden="true">
@@ -681,6 +706,22 @@ a{color:inherit}
 </div>
 
 <!-- ==========================================================
+     WIZARD SPOTLIGHT: latar gelap + blur + abu-abu, gambar pointchick.jpg
+     ========================================================== -->
+<div class="wiz" id="wiz" aria-live="polite">
+  <div class="wiz__shade" id="wizShade"></div>
+  <div class="wiz__ring" id="wizRing"></div>
+  <div class="wiz__guide is-below" id="wizGuide">
+    <i class="wiz__arrow" id="wizArrow"></i>
+    <img class="wiz__img" id="wizImg" src="pointchick.jpg" alt="" width="76" height="76" />
+    <div>
+      <div class="wiz__step" id="wizStep">Langkah 1 dari 2</div>
+      <div class="wiz__text" id="wizText"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================
      MODAL: LOADING -> CENTANG -> TOMBOL LANJUT
      ========================================================== -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -714,6 +755,10 @@ a{color:inherit}
    PROGRAM REWARD — SOTO MBAK NIE
    ------------------------------------------------------------
    CATATAN PRODUKSI (komentar ini tidak tampil di halaman):
+
+   File pendukung (taruh satu folder dengan halaman ini):
+     start.mp4      : video loading screen.
+     pointchick.jpg : gambar penunjuk di wizard spotlight.
 
    Penyimpanan (localStorage, 100% client-side / serverless):
      smn_voucher_created_at : timestamp voucher dibuat (saat halaman
@@ -749,6 +794,7 @@ const CONFIG = {
   claimClicks   : 5,        // jumlah ketukan cepat pada logo centang
   claimWindowMs : 1200,     // maks jeda antar ketukan (ms)
   processingMs  : 5000,     // durasi loading (ms) -> 5 detik
+  bootMaxMs     : 20000,    // batas maksimum loading screen (ms) bila video bermasalah
   openRealLinks : true      // true: buka Google Maps / TikTok di tab baru
 };
 
@@ -810,6 +856,7 @@ const state = {
   finished : false,  // modal sudah sampai tahap centang
   claimed  : false,  // voucher sudah diklaim
   locked   : false,  // program terkunci (tidak bisa rating lagi)
+  booted   : false,  // loading screen sudah selesai
   clicks   : 0,      // hitungan ketukan cepat
   lastClick: 0,
   timer    : null    // interval countdown masa berlaku
@@ -882,6 +929,7 @@ function applyLockUI(){
     el.heroTitle.textContent = 'Program Sudah Diklaim';
     el.heroLead.textContent = 'Voucher Anda sudah diklaim atau masa berlakunya habis. Program ini tidak bisa diikuti lagi dari perangkat ini.';
     el.success.classList.remove('is-visible');   // panel "siap diklaim" tidak relevan
+    wizHide();
   }
 }
 
@@ -906,6 +954,7 @@ function startTask(kind){
 
   state.active   = kind;
   state.finished = false;
+  wizHide();                                  // sembunyikan spotlight selagi modal terbuka
   el.modalTask.textContent = cfg.title;
   el.modalTitle.textContent = 'Berhasil!';
   el.modalDesc.textContent = cfg.desc;
@@ -970,6 +1019,7 @@ function closeModal(){
     updateProgress();
   }
   state.finished = false;
+  updateWizard();                            // lanjut ke langkah berikutnya (atau tampil ulang bila belum selesai)
 }
 
 /* Perbarui bar progres + tombol lanjut utama */
@@ -1002,7 +1052,80 @@ function updateProgress(){
 }
 
 /* ============================================================
-   4. ROUTING HALAMAN (#/tugas, #/voucher, #/expired)
+   4. WIZARD SPOTLIGHT — pointchick.jpg menunjuk tombol aktif
+      (review dulu, lalu follow). Latar gelap + blur + abu-abu;
+      area tombol dilubangi (clip-path) sehingga tetap bisa diklik.
+   ============================================================ */
+const wiz = {
+  root : $('#wiz'), shade: $('#wizShade'), ring: $('#wizRing'),
+  guide: $('#wizGuide'), arrow: $('#wizArrow'), img: $('#wizImg'),
+  step : $('#wizStep'), text: $('#wizText'),
+  target: null, t: null
+};
+wiz.img.addEventListener('error', () => { wiz.img.style.display = 'none'; });   // jika gambar tidak ada
+
+function wizHide(){
+  clearTimeout(wiz.t);
+  wiz.target = null;
+  wiz.root.classList.remove('is-on');
+}
+function wizPlace(){
+  const t = wiz.target;
+  if (!t) return;
+  const r = t.getBoundingClientRect();
+  const pad = 8, rad = 16, W = window.innerWidth, H = window.innerHeight;
+  const x = r.left - pad, y = r.top - pad, w = r.width + pad * 2, h = r.height + pad * 2;
+
+  // layar penuh dikurangi lubang rounded-rect (evenodd)
+  const d = 'M0 0H' + W + 'V' + H + 'H0Z' +
+    ' M' + (x+rad) + ' ' + y + 'H' + (x+w-rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + (x+w) + ' ' + (y+rad) +
+    'V' + (y+h-rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + (x+w-rad) + ' ' + (y+h) +
+    'H' + (x+rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + x + ' ' + (y+h-rad) +
+    'V' + (y+rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + (x+rad) + ' ' + y + 'Z';
+  const clip = 'path(evenodd, "' + d + '")';
+  wiz.shade.style.clipPath = clip;
+  wiz.shade.style.webkitClipPath = clip;
+
+  Object.assign(wiz.ring.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+
+  // kartu pointchick di atas tombol bila tombol ada di separuh bawah layar
+  const above = (y + h / 2) > H * 0.5;
+  wiz.guide.classList.toggle('is-above', above);
+  wiz.guide.classList.toggle('is-below', !above);
+  wiz.guide.style.top = (above ? y - 14 : y + h + 14) + 'px';
+
+  // panah mengarah ke tengah tombol
+  const gw = wiz.guide.offsetWidth, gl = W / 2 - gw / 2;
+  const ax = Math.min(gw - 30, Math.max(30, r.left + r.width / 2 - gl));
+  wiz.arrow.style.left = ax + 'px';
+}
+function updateWizard(){
+  clearTimeout(wiz.t);
+  const onTugas = el.pageTugas.classList.contains('is-active');
+  const kind = !state.done.review ? 'review' : (!state.done.tiktok ? 'tiktok' : null);
+
+  if (!state.booted || !onTugas || isLocked() || !kind || el.modal.classList.contains('is-open')){
+    wizHide();
+    return;
+  }
+
+  wiz.root.classList.remove('is-on');
+  // tunggu transisi halaman / animasi kartu selesai sebelum mengukur posisi
+  wiz.t = setTimeout(() => {
+    const target = kind === 'review' ? el.btnReview : el.btnTiktok;
+    wiz.target = target;
+    wiz.step.textContent = kind === 'review' ? 'Langkah 1 dari 2' : 'Langkah 2 dari 2';
+    wiz.text.innerHTML = kind === 'review'
+      ? 'Tekan <strong>Review Sekarang</strong>, lalu beri ulasan di Google Maps.'
+      : 'Terakhir, tekan <strong>Follow Sekarang</strong> untuk follow @' + CONFIG.tiktokHandle + '.';
+    target.scrollIntoView({ block: 'center' });
+    requestAnimationFrame(() => { wizPlace(); wiz.root.classList.add('is-on'); });
+  }, 520);
+}
+window.addEventListener('resize', () => { if (wiz.target) wizPlace(); });
+
+/* ============================================================
+   5. ROUTING HALAMAN (#/tugas, #/voucher, #/expired)
    ============================================================ */
 function playBigCheck(){
   el.bigCheck.classList.remove('draw');
@@ -1018,6 +1141,7 @@ function showPage(name){
 
   if (name === 'voucher'){ playBigCheck(); startTimer(); }
   else { stopTimer(); }
+  updateWizard();
 }
 function route(){
   let name = (location.hash || '').replace('#/','') || 'tugas';
@@ -1037,7 +1161,7 @@ function route(){
 window.addEventListener('hashchange', route);
 
 /* ============================================================
-   5. COUNTDOWN MASA BERLAKU
+   6. COUNTDOWN MASA BERLAKU
    ============================================================ */
 function startTimer(){ stopTimer(); tickVoucher(); state.timer = setInterval(tickVoucher, 1000); }
 function stopTimer(){ if (state.timer){ clearInterval(state.timer); state.timer = null; } }
@@ -1058,7 +1182,7 @@ function showExpired(){
 }
 
 /* ============================================================
-   6. KLAIM VOUCHER — ketukan cepat pada logo centang
+   7. KLAIM VOUCHER — ketukan cepat pada logo centang
    ============================================================ */
 function applyClaimState(claimed){
   state.claimed = claimed;
@@ -1092,7 +1216,7 @@ function handleClaimClick(){
 }
 
 /* ============================================================
-   7. EVENT UTAMA
+   8. EVENT UTAMA
    ============================================================ */
 el.btnReview.addEventListener('click', () => startTask('review'));
 el.btnTiktok.addEventListener('click', () => startTask('tiktok'));
@@ -1111,7 +1235,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ============================================================
-   8. INIT
+   9. INIT
    ============================================================ */
 (function init(){
   // pulihkan progres tugas
@@ -1130,6 +1254,39 @@ document.addEventListener('keydown', (e) => {
   route();
 })();
 
+/* ============================================================
+   10. LOADING SCREEN — putar start.mp4 sampai halaman siap
+       Tutup bila: halaman selesai dimuat DAN video selesai
+       (atau video gagal/diblokir, atau lewat CONFIG.bootMaxMs).
+       Setelah tertutup, wizard spotlight mulai.
+   ============================================================ */
+(function boot(){
+  const box = $('#boot'), vid = $('#bootVideo'), fill = $('#bootFill');
+  let loaded = document.readyState === 'complete', vidDone = false, closed = false;
+
+  function close(){
+    if (closed) return;
+    closed = true;
+    try { vid.pause(); } catch(e){}
+    box.classList.add('is-hide');
+    state.booted = true;
+    updateWizard();
+    setTimeout(() => box.remove(), 700);
+  }
+  function check(){ if (loaded && vidDone) close(); }
+
+  window.addEventListener('load', () => { loaded = true; check(); });
+  vid.addEventListener('timeupdate', () => {
+    if (vid.duration) fill.style.width = (vid.currentTime / vid.duration * 100).toFixed(1) + '%';
+  });
+  vid.addEventListener('ended', () => { fill.style.width = '100%'; vidDone = true; check(); });
+  vid.addEventListener('error', () => { vidDone = true; check(); });
+
+  const p = vid.play();
+  if (p && p.catch) p.catch(() => { vidDone = true; check(); });   // autoplay diblokir
+
+  setTimeout(() => { loaded = true; vidDone = true; check(); }, CONFIG.bootMaxMs);
+})();
 </script>
 </body>
 </html>
