@@ -3,558 +3,259 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#ffffff" />
-<title>Soto Mbak Nie — Klaim Voucher Free Es Teh</title>
-<meta name="description" content="Program Reward Pelanggan Soto Mbak Nie. Selesaikan review Google Maps dan follow TikTok, lalu tunjukkan voucher Free Es Teh ke kasir." />
-<meta name="author" content="Soto Mbak Nie" />
-<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#e9e3da" />
+<title>Soto Mbak Nie: Klaim Voucher Free Es Teh</title>
+<meta name="description" content="Review di Google Maps dan follow TikTok @sotombaknie.mj9, lalu tunjukkan voucher Free Es Teh ke kasir." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="id_ID" />
 <meta property="og:site_name" content="Soto Mbak Nie" />
-<meta property="og:title" content="Soto Mbak Nie — Klaim Voucher Free Es Teh" />
+<meta property="og:title" content="Soto Mbak Nie: Klaim Voucher Free Es Teh" />
 <meta property="og:description" content="Review di Google Maps + follow TikTok @sotombaknie.mj9 = voucher Free Es Teh. Tunjukkan halaman ini ke kasir." />
-<!-- og:image: isi dengan URL gambar Anda (1200x630), lalu hapus baris komentar ini -->
-<!-- <meta property="og:image" content="https://domain/tanda/smi/og-cover.png" /> -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316a34a'/%3E%3Ctext x='32' y='40' font-family='Arial,Helvetica,sans-serif' font-size='18' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3ESMN%3C/text%3E%3C/svg%3E" />
-
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23b3382c'/%3E%3Cpath d='M12 30h40c0 12-9 20-20 20S12 42 12 30Z' fill='%23fff'/%3E%3C/svg%3E" />
 <style>
-/* ============================================================
-   1. DESIGN TOKENS
-   ============================================================ */
+/* DESIGN READ: halaman klaim voucher di HP untuk pelanggan warung soto (banyak orang tua),
+   neumorphism hangat (permukaan timbul = tombol besar yang terasa bisa ditekan),
+   tanpa hijau/kuning sesuai arahan. ENERGY 2 / RHYTHM 1 / MOTION 3 (loading & aksi pengguna).
+   Aksen tunggal: merah cabai #b3382c (kuah, sambal). Serif hangat untuk judul, sans besar untuk isi. */
 :root{
-  --bg:#f5f6f8;
-  --surface:#ffffff;
-  --surface-2:#fafbfc;
-  --ink:#0f172a;
-  --ink-2:#334155;
-  --muted:#6b7280;
-  --line:#e7e9ee;
-  --line-strong:#d9dde5;
-  --accent:#16a34a;
-  --accent-600:#15803d;
-  --accent-700:#166534;
-  --accent-50:#f0fdf4;
-  --accent-100:#dcfce7;
-  --warn:#ea580c;
-  --radius-lg:20px;
-  --radius:14px;
-  --radius-sm:10px;
-  --shadow-sm:0 1px 2px rgba(15,23,42,.05);
-  --shadow:0 1px 2px rgba(15,23,42,.04), 0 10px 30px -14px rgba(15,23,42,.16);
-  --shadow-lg:0 28px 70px -24px rgba(15,23,42,.32);
-  --ease:cubic-bezier(.22,.61,.36,1);
-  --font:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --bg:#e9e3da;--ink:#23201d;--ink2:#4a433c;--muted:#5e564d;
+  --accent:#b3382c;--accent-d:#8f2a21;--accent-t:#f4dcd6;
+  --hi:#fbf8f3;--lo:#cdc4b7;--line:rgba(35,32,29,.14);
+  --raise:7px 7px 16px var(--lo),-7px -7px 16px var(--hi);
+  --raise-s:4px 4px 10px var(--lo),-4px -4px 10px var(--hi);
+  --inset:inset 5px 5px 11px var(--lo),inset -5px -5px 11px var(--hi);
+  --r:22px;--ease:cubic-bezier(.22,.61,.36,1);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
-
-/* ============================================================
-   2. RESET & BASE
-   ============================================================ */
 *,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--font);
-  font-size:16px;
-  line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-  -webkit-text-size-adjust:100%;
-}
-h1,h2,h3,p{margin:0}
-button{font:inherit;color:inherit}
-img,svg{display:block}
-a{color:inherit}
-:focus-visible{outline:3px solid rgba(22,163,74,.35);outline-offset:2px;border-radius:8px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+h1,h2,p{margin:0}button{font:inherit;color:inherit}svg{display:block}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
 
-/* ============================================================
-   3. LAYOUT (tanpa header / topbar)
-   ============================================================ */
 .app{position:relative;min-height:100dvh;overflow:hidden}
-.page{
-  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
-  padding:0 16px 175px;
-  opacity:0;visibility:hidden;transform:translateY(14px) scale(.995);
-  transition:opacity .45s var(--ease),transform .45s var(--ease),visibility .45s;
-}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 18px 200px;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .45s var(--ease),transform .45s var(--ease),visibility .45s}
 #pageVoucher,#pageExpired{padding-bottom:48px}
 .page.is-active{opacity:1;visibility:visible;transform:none}
-.wrap{max-width:620px;margin:0 auto}
+.wrap{max-width:560px;margin:0 auto}
 
-/* ============================================================
-   4. LOADING SCREEN (video start.mp4)
-   ============================================================ */
-.boot{
-  position:fixed;inset:0;z-index:100;background:#1f2228;
-  transition:opacity .6s var(--ease),visibility .6s;
-}
+/* LOADING AWAL: mangkuk soto terisi kuah mengikuti progres video, uap naik (subjeknya soto) */
+.boot{position:fixed;inset:0;z-index:100;background:#241f1c;transition:opacity .6s var(--ease),visibility .6s}
 .boot.is-hide{opacity:0;visibility:hidden;pointer-events:none}
-.boot__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.boot__ui{
-  position:absolute;left:0;right:0;bottom:0;
-  padding:48px 24px calc(28px + env(safe-area-inset-bottom));
-  display:grid;gap:10px;justify-items:center;
-  background:linear-gradient(to top,rgba(20,22,26,.72),transparent);
-  color:#fff;font-size:13px;font-weight:600;
-}
-.boot__bar{width:min(240px,70%);height:5px;border-radius:999px;background:rgba(255,255,255,.28);overflow:hidden}
-.boot__bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--accent),#4ade80);transition:width .25s linear}
+.boot__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4}
+.boot__ui{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#f6efe6;text-align:center;padding:24px}
+.boot .bowl{width:168px;height:140px;color:#f6efe6}
+.boot__brand{font:700 30px/1.1 var(--serif);letter-spacing:.2px}
+.boot__sub{font-size:15px;color:#d8cfc3}
+.boot__bar{width:min(240px,70%);height:8px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden}
+.boot__bar i{display:block;height:100%;width:0;border-radius:99px;background:#f6efe6;transition:width .25s linear}
+.boot__brand,.boot__sub{animation:rise .8s var(--ease) both}.boot__sub{animation-delay:.15s}
 
-/* ============================================================
-   5. HERO
-   ============================================================ */
-.hero{padding:calc(36px + env(safe-area-inset-top)) 4px 18px;text-align:center}
-.hero h1{font-size:26px;font-weight:800;letter-spacing:-.4px;margin:0 0 8px}
-.hero p{color:var(--muted);font-size:14.5px;max-width:44ch;margin:0 auto}
+.bowl{width:120px;height:100px;color:var(--ink);overflow:visible}
+.bowl .rim{fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round}
+.bowl .broth{fill:var(--accent);transform:translateY(calc((1 - var(--p,1)) * 42px));transition:transform .3s linear}
+.bowl .st{fill:none;stroke:currentColor;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:30;opacity:0;animation:steam 2.4s ease-in-out infinite}
 
-/* ============================================================
-   6. CARDS
-   ============================================================ */
-.card{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-lg);
-  box-shadow:var(--shadow);
-}
-.card--pad{padding:20px}
-.card__title{font-size:16px;font-weight:700}
-.card__label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+.hero{padding:calc(30px + env(safe-area-inset-top)) 4px 22px;text-align:center}
+.hero .bowl{margin:0 auto 14px}
+.hero h1{font:700 30px/1.15 var(--serif);letter-spacing:-.3px;margin-bottom:10px}
+.hero p{color:var(--muted);max-width:34ch;margin:0 auto}
 
-.rules{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
-.rules li{display:flex;gap:10px;font-size:14px;color:var(--ink-2);align-items:flex-start}
-.rules .n{
-  flex:0 0 20px;height:20px;border-radius:50%;
-  background:var(--surface-2);border:1px solid var(--line-strong);
-  display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink-2);
-}
+.card{background:var(--bg);border-radius:var(--r);box-shadow:var(--raise)}
+.card--pad{padding:22px}
+.card__title{font:700 20px/1.3 var(--serif);margin:0 0 4px}
+.rules{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
+.rules li{display:flex;gap:12px;align-items:flex-start;color:var(--ink2)}
+.rules .n{flex:0 0 28px;height:28px;border-radius:50%;box-shadow:var(--inset);display:grid;place-items:center;font-size:14px;font-weight:700;color:var(--accent-d)}
 
-/* ============================================================
-   7. TASK CARDS (2 tombol: review + follow)
-   ============================================================ */
-.steps{display:grid;gap:12px;margin:16px 0 0;max-height:600px;
-  transition:opacity .4s var(--ease),transform .4s var(--ease),max-height .5s var(--ease)}
-.task{
-  display:flex;align-items:center;gap:14px;
-  padding:16px;
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius);box-shadow:var(--shadow-sm);
-  transition:transform .35s var(--ease),opacity .35s var(--ease),
-             max-height .45s var(--ease),padding .35s var(--ease),border-color .3s;
-  overflow:hidden;
-}
-.task__icon{
-  flex:0 0 44px;width:44px;height:44px;border-radius:13px;
-  background:var(--surface-2);border:1px solid var(--line);
-  display:grid;place-items:center;color:var(--ink-2);
-}
-.task__body{flex:1;min-width:0}
-.task__head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.task__title{font-size:15px;font-weight:700;line-height:1.3}
-.task__desc{font-size:13px;color:var(--muted);margin-top:3px}
-.tag{
-  font-size:10.5px;font-weight:750;letter-spacing:.4px;text-transform:uppercase;
-  padding:3px 8px;border-radius:999px;background:var(--surface-2);
-  border:1px solid var(--line-strong);color:var(--muted);
-}
-.task__actions{display:flex;align-items:center;gap:10px;transition:opacity .3s var(--ease),max-height .35s var(--ease),transform .3s var(--ease);max-height:80px}
+.steps{display:grid;gap:18px;margin:22px 0 0;max-height:700px;transition:opacity .4s var(--ease),transform .4s var(--ease),max-height .5s var(--ease)}
+.task{display:grid;grid-template-columns:56px 1fr;gap:6px 14px;align-items:center;padding:18px;background:var(--bg);border-radius:var(--r);box-shadow:var(--raise);transition:box-shadow .4s var(--ease)}
+.task__icon{width:56px;height:56px;border-radius:18px;box-shadow:var(--inset);display:grid;place-items:center;color:var(--accent-d);transition:background .4s,color .4s}
+.task__title{font-weight:700;font-size:18px;line-height:1.3}
+.task__desc{font-size:15px;color:var(--muted);margin-top:2px}
+.tag{display:block;font-size:13px;font-weight:700;color:var(--accent-d);margin-bottom:2px}
+.task__actions,.task__done{grid-column:1/-1;margin-top:10px}
+.task__actions{transition:opacity .3s var(--ease),max-height .4s var(--ease),transform .3s var(--ease);max-height:90px}
+.btn-task{width:100%;min-height:54px;border:0;border-radius:16px;background:var(--accent);color:#fff;font-weight:700;font-size:17px;cursor:pointer;box-shadow:5px 5px 12px rgba(143,42,33,.35),-4px -4px 10px var(--hi);transition:transform .15s var(--ease),box-shadow .2s,background .2s}
+.btn-task:hover{background:var(--accent-d)}
+.btn-task:active{transform:scale(.98);box-shadow:inset 3px 3px 8px rgba(0,0,0,.35)}
+.task__done{display:none;align-items:center;justify-content:center;gap:9px;min-height:54px;border-radius:16px;box-shadow:var(--inset);font-weight:700;color:var(--ink)}
+.task.is-done .task__actions{opacity:0;transform:scale(.92);max-height:0;overflow:hidden;margin:0}
+.task.is-done .task__done{display:flex;animation:pop .5s var(--ease) both}
+.task.is-done .task__icon{background:var(--ink);color:#fff;box-shadow:none}
+.steps.is-cleared{opacity:0;transform:translateY(-10px) scale(.97);max-height:0;overflow:hidden;pointer-events:none;margin:0}
+.steps.is-locked{opacity:.55;filter:grayscale(1)}
+.steps.is-locked .btn-task{cursor:not-allowed;background:var(--lo);color:var(--ink2);box-shadow:none}
 
-/* tombol yang akan "dihilangkan" saat selesai */
-.btn-task{
-  flex:0 0 auto;
-  border:1px solid var(--line-strong);background:var(--surface);
-  padding:9px 15px;border-radius:11px;font-size:13.5px;font-weight:700;
-  cursor:pointer;white-space:nowrap;
-  transition:transform .18s var(--ease),box-shadow .2s,background .2s,border-color .2s,opacity .3s;
-}
-.btn-task:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm);border-color:var(--accent);color:var(--accent-700)}
-.btn-task:active{transform:translateY(0) scale(.98)}
+.success{display:none;align-items:center;gap:14px;margin-top:22px;padding:20px;border-radius:var(--r);box-shadow:var(--inset)}
+.success.is-visible{display:flex;animation:rise .55s var(--ease) both}
+.success__icon{flex:0 0 46px;height:46px;border-radius:50%;background:var(--ink);display:grid;place-items:center}
+.success__title{font:700 18px var(--serif)}
+.success__desc{font-size:15px;color:var(--muted)}
 
-/* status selesai (menggantikan tombol) */
-.task__done{
-  display:none;align-items:center;gap:7px;
-  font-size:13px;font-weight:700;color:var(--accent-700);
-  background:var(--accent-50);border:1px solid var(--accent-100);
-  padding:8px 13px;border-radius:11px;white-space:nowrap;
-}
-.task.is-done .task__actions{opacity:0;transform:translateY(-6px) scale(.9);max-height:0;overflow:hidden}
-.task.is-done .task__done{display:inline-flex;animation:popIn .45s var(--ease) both}
-.task.is-done .task__icon{background:var(--accent-50);border-color:var(--accent-100);color:var(--accent-700)}
+.lockbanner{display:none;gap:12px;padding:16px;border-radius:var(--r);box-shadow:var(--inset);margin-bottom:18px;color:var(--ink2)}
+.lockbanner.is-visible{display:flex;animation:rise .45s var(--ease) both}
+.lockbanner svg{flex:0 0 22px;margin-top:2px;color:var(--accent-d)}
+.lockbanner strong{display:block;color:var(--ink)}
 
-/* state "2 tombol dihilangkan" */
-.steps.is-cleared{opacity:0;transform:translateY(-10px) scale(.97);max-height:0;overflow:hidden;pointer-events:none}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bg);box-shadow:0 -8px 20px rgba(205,196,183,.7);padding:14px 18px calc(14px + env(safe-area-inset-bottom))}
+.dock__inner{max-width:560px;margin:0 auto;display:grid;gap:10px}
+.dock__meta{display:flex;justify-content:space-between;font-size:15px;color:var(--muted)}
+.dock__meta strong{color:var(--ink)}
+.bar{height:12px;border-radius:99px;box-shadow:var(--inset);overflow:hidden;padding:2px}
+.bar__fill{height:100%;width:0;border-radius:99px;background:var(--accent);transition:width .7s var(--ease)}
+.btn{border:0;border-radius:16px;min-height:56px;padding:0 20px;font-weight:700;font-size:18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:transform .15s var(--ease),background .2s,box-shadow .25s}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:5px 5px 12px rgba(143,42,33,.35),-4px -4px 10px var(--hi)}
+.btn-primary:hover{background:var(--accent-d)}
+.btn-primary:active{transform:scale(.98)}
+.btn-primary:disabled{background:var(--bg);color:var(--muted);box-shadow:var(--inset);cursor:not-allowed}
+.btn-ghost{background:var(--bg);box-shadow:var(--raise-s);color:var(--ink)}
+.btn-ghost:active{box-shadow:var(--inset)}
+.btn--enter{animation:rise .5s var(--ease) both}
+.btn--pulse{animation:rise .5s var(--ease) both,glow 2.2s ease-in-out .6s infinite}
+.hint{font-size:14px;color:var(--muted);text-align:center}
 
-/* ============================================================
-   8. SUCCESS PANEL + TOMBOL LANJUT
-   ============================================================ */
-.success{
-  display:none;align-items:center;gap:14px;
-  padding:18px;border-radius:var(--radius);
-  background:var(--accent-50);border:1px solid var(--accent-100);
-}
-.success.is-visible{display:flex;animation:slideUp .55s var(--ease) both}
-.success__icon{
-  flex:0 0 40px;width:40px;height:40px;border-radius:50%;
-  background:var(--accent);color:#fff;display:grid;place-items:center;
-  animation:popIn .5s var(--ease) both .1s;
-}
-.success__icon .check circle,
-.success__icon .check path{stroke:#fff}
-.success__title{font-weight:750;font-size:15px;color:var(--accent-700)}
-.success__desc{font-size:13px;color:var(--ink-2)}
-
-/* ============================================================
-   9. STICKY BOTTOM BAR (progress + tombol lanjut)
-   ============================================================ */
-.dock{
-  position:fixed;left:0;right:0;bottom:0;z-index:30;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:saturate(180%) blur(12px);
-  border-top:1px solid var(--line);
-  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-}
-.dock__inner{max-width:620px;margin:0 auto;display:grid;gap:10px}
-.dock__meta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted)}
-.dock__meta strong{color:var(--ink);font-weight:700}
-.bar{height:7px;border-radius:999px;background:var(--line);overflow:hidden}
-.bar__fill{
-  height:100%;width:0;border-radius:999px;
-  background:linear-gradient(90deg,var(--accent),#4ade80);
-  transition:width .6s var(--ease);
-}
-.btn{
-  border:0;border-radius:12px;padding:13px 18px;
-  font-weight:750;font-size:15px;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  transition:transform .18s var(--ease),background .2s,box-shadow .25s,opacity .25s,color .2s;
-}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 10px 24px -12px rgba(22,163,74,.9)}
-.btn-primary:hover{background:var(--accent-600);transform:translateY(-1px)}
-.btn-primary:active{transform:translateY(0) scale(.985)}
-.btn-primary:disabled{background:var(--line);color:#9aa1ad;box-shadow:none;cursor:not-allowed;transform:none}
-.btn-ghost{background:transparent;border:1px solid var(--line-strong);color:var(--ink-2)}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent-700)}
-.btn.is-hidden{display:none}
-
-/* tombol lanjut muncul dengan animasi */
-.btn--enter{animation:slideUp .5s var(--ease) both}
-.btn--pulse{animation:slideUp .5s var(--ease) both,pulse 2.4s var(--ease) .6s infinite}
-.hint{font-size:12px;color:var(--muted);text-align:center}
-
-/* ============================================================
-   10. MODAL (loading -> centang -> lanjut) — latar gelap, blur, abu-abu
-   ============================================================ */
-.modal{
-  position:fixed;inset:0;z-index:60;
-  display:grid;place-items:center;padding:20px;
-  background:rgba(40,43,50,.6);
-  -webkit-backdrop-filter:blur(8px) grayscale(.8);
-  backdrop-filter:blur(8px) grayscale(.8);
-  opacity:0;visibility:hidden;
-  transition:opacity .3s var(--ease),visibility .3s;
-}
+/* MODAL: latar digelapkan, diburamkan dan diabu-abukan agar perhatian hanya ke kotak proses */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px;background:rgba(36,31,28,.62);-webkit-backdrop-filter:blur(9px) grayscale(.9);backdrop-filter:blur(9px) grayscale(.9);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s}
 .modal.is-open{opacity:1;visibility:visible}
-.modal__box{
-  width:100%;max-width:380px;
-  background:var(--surface);border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-lg);
-  padding:26px 22px 22px;text-align:center;
-  transform:translateY(14px) scale(.96);
-  transition:transform .35s var(--ease);
-}
+.modal__box{width:100%;max-width:380px;background:var(--bg);border-radius:26px;box-shadow:0 30px 70px -20px rgba(0,0,0,.6);padding:26px 22px 22px;text-align:center;transform:translateY(16px) scale(.95);transition:transform .4s var(--ease)}
 .modal.is-open .modal__box{transform:none}
-.modal__task{font-size:13px;color:var(--muted);margin-bottom:18px}
-.modal__title{font-size:18px;font-weight:750;margin-top:16px}
-.modal__desc{font-size:13.5px;color:var(--muted);margin-top:6px}
-
-/* loader */
-.spinner{
-  width:54px;height:54px;margin:0 auto;border-radius:50%;
-  border:4px solid var(--line);border-top-color:var(--accent);
-  animation:spin .9s linear infinite;
-}
-.loader{display:none}
-.modal.is-loading .loader{display:block}
-.modal.is-loading .result{display:none}
-.modal.is-loading .modal__action{display:none}
-
-/* progress bar di modal */
-.pbar{height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:18px}
-.pbar__fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#4ade80);border-radius:999px}
-.pcount{margin-top:9px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-
-/* hasil: centang */
+.modal__task{font-size:15px;color:var(--muted);margin-bottom:14px}
+.modal__title{font:700 24px var(--serif);margin-top:14px}
+.modal__desc{color:var(--muted);margin-top:6px}
+.loader{display:none}.modal.is-loading .loader{display:block}.modal.is-loading .result,.modal.is-loading .modal__action{display:none}
+.loader .bowl{margin:0 auto}
+.pbar{height:12px;border-radius:99px;box-shadow:var(--inset);overflow:hidden;padding:2px;margin-top:20px}
+.pbar__fill{height:100%;width:0;border-radius:99px;background:var(--accent)}
+.pcount{margin-top:10px;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
 .result{display:none}
 .modal.is-success .loader{display:none}
-.modal.is-success .result{display:block;animation:popIn .5s var(--ease) both}
-.check{width:78px;height:78px;margin:0 auto}
-.check circle{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;
-  stroke-dasharray:1;stroke-dashoffset:1;}
-.check path{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:1;stroke-dashoffset:1;}
-.check.draw circle{animation:draw .6s var(--ease) forwards}
-.check.draw path{animation:draw .35s var(--ease) forwards .45s}
-.check--sm{width:18px;height:18px}
-.check--sm circle{stroke-width:6}
-.check--sm path{stroke-width:8}
+.modal.is-success .result{display:block;animation:pop .5s var(--ease) both}
+.check{width:84px;height:84px;margin:0 auto}
+.check circle,.check path{fill:none;stroke:var(--ink);stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.check circle{stroke-width:4}.check path{stroke-width:5;stroke:var(--accent)}
+.check.draw circle{animation:draw .6s var(--ease) forwards}.check.draw path{animation:draw .35s var(--ease) forwards .45s}
+.check--sm{width:22px;height:22px}.check--sm circle{stroke-width:6}.check--sm path{stroke-width:8}
+.success__icon .check--sm{width:28px;height:28px}.success__icon .check circle{stroke:#fff}.success__icon .check path{stroke:#fff}
+.task.is-done .task__done .check path{stroke:var(--accent)}
+.modal__action{display:none;margin-top:22px}.modal.is-success .modal__action{display:block}.modal__action .btn{width:100%}
 
-/* tombol lanjut di modal */
-.modal__action{display:none;margin-top:20px}
-.modal.is-success .modal__action{display:block}
-.modal__action .btn{width:100%}
-
-/* ============================================================
-   11. HALAMAN VOUCHER
-   ============================================================ */
-.vwrap{max-width:520px;margin:0 auto;padding:calc(36px + env(safe-area-inset-top)) 4px 40px;text-align:center}
-.bigcheck{width:112px;height:112px;margin:6px auto 10px}
-.bigcheck circle{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.vwrap{max-width:500px;margin:0 auto;padding:calc(30px + env(safe-area-inset-top)) 4px 40px;text-align:center}
+.bigwrap{position:relative;width:120px;height:120px;margin:6px auto 14px}
+.bigwrap::before,.bigwrap::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--accent);opacity:0}
+#pageVoucher.is-active .bigwrap::before{animation:ripple 2.2s ease-out .7s 2}
+#pageVoucher.is-active .bigwrap::after{animation:ripple 2.2s ease-out 1.3s 2}
+.bigcheck{position:relative;width:120px;height:120px;border-radius:50%;box-shadow:var(--raise);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bigcheck circle{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 .bigcheck path{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
-.bigcheck.draw circle{animation:draw .7s var(--ease) forwards}
-.bigcheck.draw path{animation:draw .4s var(--ease) forwards .55s}
-.bigcheck.tap{animation:tap .32s var(--ease)}
-.bigcheck.is-claimed{filter:saturate(1.1)}
-.vwrap h1{font-size:27px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
-.vwrap .lead{color:var(--muted);font-size:14.5px;max-width:40ch;margin:0 auto 22px}
+.bigcheck.draw circle{animation:draw .7s var(--ease) forwards}.bigcheck.draw path{animation:draw .4s var(--ease) forwards .55s}
+.bigcheck.tap{animation:tap .3s var(--ease)}
+.vwrap h1{font:700 32px/1.15 var(--serif);margin-bottom:10px}
+.vwrap .lead{color:var(--muted);max-width:34ch;margin:0 auto 24px}
 
-.voucher{
-  text-align:left;background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;
-}
-.voucher__top{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;
-  padding:14px 18px;background:var(--surface-2);border-bottom:1px dashed var(--line-strong);
-}
-.voucher__badge{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--accent-700)}
-.voucher__brand{font-size:12.5px;font-weight:700;color:var(--ink-2)}
-.voucher__body{padding:20px 18px}
-.voucher__value{font-size:24px;font-weight:800;letter-spacing:-.4px}
-.voucher__meta{font-size:13px;color:var(--muted);margin-top:4px}
-.voucher__countdown{
-  display:inline-flex;align-items:center;gap:8px;margin-top:14px;
-  padding:8px 13px;border-radius:999px;
-  background:var(--accent-50);border:1px solid var(--accent-100);
-  color:var(--accent-700);font-size:12.5px;font-weight:700;
-}
-.voucher__countdown.is-expired{background:#fef2f2;border-color:#fee2e2;color:#b91c1c}
-
-.instruct{
-  display:flex;gap:12px;align-items:flex-start;text-align:left;
-  padding:15px 16px;border-radius:var(--radius);
-  background:var(--accent-50);border:1px solid var(--accent-100);
-  font-size:14px;color:var(--ink-2);margin-bottom:20px;
-}
-.instruct svg{flex:0 0 20px;margin-top:1px;color:var(--accent-700)}
-
-.claimbox{display:grid;gap:12px;justify-items:center}
-.status{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  font-size:12.5px;font-weight:700;color:var(--accent-700);
-  background:var(--accent-50);border:1px solid var(--accent-100);
-  padding:7px 13px;border-radius:999px;animation:popIn .4s var(--ease) both;
-}
+/* voucher berbentuk tiket: lekuk di garis sobekan menandai bagian yang ditunjukkan ke kasir */
+.vbox{margin-bottom:20px;filter:drop-shadow(7px 7px 10px var(--lo)) drop-shadow(-6px -6px 9px var(--hi))}
+.voucher{text-align:left;background:var(--bg);overflow:hidden;border-radius:var(--r);
+  -webkit-mask:radial-gradient(circle 13px at 0 58px,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 13px at 100% 58px,#0000 97%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 13px at 0 58px,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 13px at 100% 58px,#0000 97%,#000) right/51% 100% no-repeat}
+.voucher__top{display:flex;justify-content:space-between;align-items:center;height:116px;padding:0 24px;border-bottom:2px dashed var(--lo);align-items:flex-start;padding-top:20px}
+.voucher__badge{font-weight:700;color:var(--accent-d)}
+.voucher__brand{font:700 18px var(--serif)}
+.voucher__body{padding:20px 24px 24px;margin-top:-52px}
+.voucher__value{font:700 30px/1.15 var(--serif)}
+.voucher__meta{color:var(--muted);margin-top:6px}
+.voucher__countdown{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:10px 16px;border-radius:99px;box-shadow:var(--inset);font-weight:700;font-size:15px;color:var(--ink)}
+.voucher__countdown.is-expired{color:var(--muted)}
+.instruct{display:flex;gap:12px;text-align:left;padding:18px;border-radius:var(--r);box-shadow:var(--inset);color:var(--ink2);margin-bottom:22px}
+.instruct svg{flex:0 0 22px;margin-top:2px;color:var(--accent-d)}
+.instruct strong{color:var(--ink)}
+.claimbox{display:grid;gap:14px;justify-items:center}
+.claimbox .btn{width:100%}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:700;padding:10px 16px;border-radius:99px;box-shadow:var(--inset);animation:pop .4s var(--ease) both}
 .status.is-hidden{display:none}
-
-.foot{margin-top:26px;text-align:center;font-size:12px;color:#9aa1ad;line-height:1.7}
-
-/* toast */
-.toast{
-  position:fixed;left:50%;bottom:96px;transform:translate(-50%,12px);
-  background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;
-  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s var(--ease);z-index:80;
-}
+.foot{margin-top:26px;font-size:14px;color:var(--muted);line-height:1.7}
+.toast{position:fixed;left:50%;bottom:120px;transform:translate(-50%,12px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s var(--ease);z-index:80}
 .toast.is-show{opacity:1;transform:translate(-50%,0)}
-
-/* ============================================================
-   12. LOCK & HALAMAN KEDALUWARSA
-   ============================================================ */
-.lockbanner{
-  display:none;align-items:flex-start;gap:12px;text-align:left;
-  padding:15px 16px;border-radius:var(--radius);
-  background:#fff7ed;border:1px solid #fed7aa;margin-bottom:16px;
-}
-.lockbanner.is-visible{display:flex;animation:slideUp .45s var(--ease) both}
-.lockbanner svg{flex:0 0 20px;margin-top:2px;color:var(--warn)}
-.lockbanner strong{display:block;font-size:14px;color:#9a3412}
-.lockbanner span{font-size:13px;color:var(--ink-2)}
-
-/* program terkunci: tombol review & follow mati */
-.steps.is-locked{opacity:.6;filter:grayscale(.65)}
-.steps.is-locked .btn-task{
-  cursor:not-allowed;background:var(--surface-2);color:#9aa1ad;
-  border-color:var(--line);box-shadow:none;transform:none;
-}
-.steps.is-locked .btn-task:hover{border-color:var(--line);color:#9aa1ad}
-
-.expired__icon{
-  width:96px;height:96px;margin:8px auto 16px;border-radius:50%;
-  background:#f1f5f9;border:1px solid var(--line-strong);
-  display:grid;place-items:center;color:#94a3b8;
-}
-.expired__box{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:18px;border-radius:var(--radius);text-align:left;
-  background:var(--surface);border:1px solid var(--line);
-  box-shadow:var(--shadow-sm);margin-bottom:20px;
-}
-.expired__value{font-size:20px;font-weight:800;color:var(--muted);text-decoration:line-through}
-.expired__state{
-  display:inline-flex;align-items:center;gap:7px;
-  font-size:12.5px;font-weight:800;color:#b91c1c;
-  background:#fef2f2;border:1px solid #fee2e2;padding:7px 12px;border-radius:999px;
-}
-
-/* ============================================================
-   13. WIZARD SPOTLIGHT (pointchick.jpg)
-   Latar digelapkan + blur + abu-abu, hanya tombol aktif yang terang.
-   ============================================================ */
-.wiz{
-  position:fixed;inset:0;z-index:50;pointer-events:none;
-  opacity:0;visibility:hidden;
-  transition:opacity .4s var(--ease),visibility .4s;
-}
-.wiz.is-on{opacity:1;visibility:visible}
-.wiz__shade{
-  position:absolute;inset:0;pointer-events:auto;
-  background:rgba(40,43,50,.55);
-  -webkit-backdrop-filter:blur(7px) grayscale(.85) brightness(.75);
-  backdrop-filter:blur(7px) grayscale(.85) brightness(.75);
-}
-.wiz__ring{
-  position:absolute;border-radius:16px;
-  border:2.5px solid #fff;
-  box-shadow:0 0 0 4px rgba(22,163,74,.55),0 0 28px 6px rgba(74,222,128,.5);
-  animation:wizPulse 1.8s var(--ease) infinite;
-}
-.wiz__guide{
-  position:absolute;left:50%;width:min(92vw,360px);
-  display:flex;align-items:center;gap:12px;
-  padding:10px 14px 10px 10px;border-radius:18px;
-  background:#fff;box-shadow:var(--shadow-lg);
-  transform:translateX(-50%);
-  transition:top .45s var(--ease);
-}
-.wiz__guide.is-above{transform:translate(-50%,-100%)}
-.wiz__img{
-  flex:0 0 76px;width:76px;height:76px;border-radius:16px;
-  object-fit:cover;background:var(--accent-50);
-  animation:wizBob 1.6s ease-in-out infinite;
-}
-.wiz__step{font-size:12px;font-weight:800;color:var(--accent-700)}
-.wiz__text{font-size:13.5px;color:var(--ink-2);line-height:1.4;margin-top:2px}
-.wiz__arrow{
-  position:absolute;width:16px;height:16px;background:#fff;
-  transform:translateX(-50%) rotate(45deg);
-}
-.wiz__guide.is-above .wiz__arrow{bottom:-7px}
-.wiz__guide.is-below .wiz__arrow{top:-7px}
-
-/* ============================================================
-   14. ANIMATIONS
-   ============================================================ */
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes tap{
-  0%{transform:scale(1)}
-  45%{transform:scale(.86)}
-  100%{transform:scale(1)}
-}
-@keyframes draw{to{stroke-dashoffset:0}}
-@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{
-  0%,100%{box-shadow:0 10px 24px -12px rgba(22,163,74,.9)}
-  50%{box-shadow:0 10px 30px -8px rgba(22,163,74,1)}
-}
-@keyframes wizPulse{
-  50%{box-shadow:0 0 0 7px rgba(22,163,74,.3),0 0 36px 10px rgba(74,222,128,.7)}
-}
-@keyframes wizBob{50%{transform:translateY(-4px)}}
-
-/* halaman terkunci: success.jpg (landscape) muat penuh di layar, latar tetap putih */
-#pageLocked{
-  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  background:#fff;overflow:hidden;
-}
+.expired__icon{width:104px;height:104px;margin:8px auto 18px;border-radius:50%;box-shadow:var(--inset);display:grid;place-items:center;color:var(--muted)}
+.expired__box{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border-radius:var(--r);box-shadow:var(--raise);text-align:left;margin-bottom:22px}
+.expired__value{font:700 21px var(--serif);color:var(--muted);text-decoration:line-through}
+.expired__state{display:inline-flex;gap:7px;align-items:center;font-weight:700;padding:8px 14px;border-radius:99px;box-shadow:var(--inset)}
+#pageExpired .btn{width:100%}
+#pageLocked{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:#fff;overflow:hidden}
 .locked__img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
-.locked__fb{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-size:22px;font-weight:800;color:var(--accent-700)}
+.locked__fb{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font:700 24px var(--serif)}
 .locked__fb[hidden]{display:none}
 
-/* tutorial cara mengisi review (contoh tampilan + highlight) */
-.mock{background:#fff;border:1px solid var(--line-strong);border-radius:16px;padding:14px;display:grid;gap:12px;text-align:left}
-.mock__head{display:flex;align-items:center;gap:10px}
-.mock__dot{width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
-.mock__head b{font-size:14px}
-.mock__head small{display:block;font-size:11.5px;color:var(--muted)}
-.mock__part{border-radius:12px;transition:filter .3s var(--ease),opacity .3s var(--ease)}
-.mock__stars{font-size:30px;letter-spacing:4px;color:#f5b301;text-align:center;padding:6px}
-.mock__text{border:1px solid var(--line-strong);background:var(--surface-2);min-height:72px;padding:10px 12px;font-size:13.5px;color:var(--muted)}
-.mock__post{justify-self:end;background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:9px 24px}
-.mock[data-step="1"] .mock__part:not([data-p="1"]),
-.mock[data-step="2"] .mock__part:not([data-p="2"]),
-.mock[data-step="3"] .mock__part:not([data-p="3"]){filter:blur(2px) grayscale(1);opacity:.4}
-.mock[data-step="1"] [data-p="1"],
-.mock[data-step="2"] [data-p="2"],
-.mock[data-step="3"] [data-p="3"]{animation:mockPulse 1.8s var(--ease) infinite}
-.tut__guide{display:flex;align-items:center;gap:12px;margin:16px 0;text-align:left}
-.tut__cap{font-size:14px;color:var(--ink-2);line-height:1.45;min-height:4em}
-#tutNext{width:100%}
-.tut__skip{width:100%;margin-top:8px;padding:10px;font-size:13px}
-@keyframes mockPulse{
-  0%,100%{box-shadow:0 0 0 3px #fff,0 0 0 6px rgba(22,163,74,.65)}
-  50%{box-shadow:0 0 0 3px #fff,0 0 0 10px rgba(22,163,74,.22)}
-}
+/* SPOTLIGHT: hanya tombol aktif yang terang, sisanya gelap + buram */
+.wiz{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}
+.wiz.is-on{opacity:1;visibility:visible}
+.wiz__shade{position:absolute;inset:0;pointer-events:auto;background:rgba(36,31,28,.6);-webkit-backdrop-filter:blur(7px) grayscale(.9) brightness(.8);backdrop-filter:blur(7px) grayscale(.9) brightness(.8)}
+.wiz__ring{position:absolute;border-radius:20px;border:3px solid #fff;box-shadow:0 0 0 5px rgba(179,56,44,.7);animation:ringp 1.8s ease-in-out infinite}
+.wiz__guide{position:absolute;left:50%;width:min(92vw,360px);display:flex;align-items:center;gap:12px;padding:10px 16px 10px 10px;border-radius:20px;background:var(--bg);box-shadow:0 20px 50px -14px rgba(0,0,0,.6);transform:translateX(-50%);transition:top .45s var(--ease)}
+.wiz__guide.is-above{transform:translate(-50%,-100%)}
+.wiz__img{flex:0 0 76px;width:76px;height:76px;border-radius:16px;object-fit:cover;background:var(--accent-t);animation:bob 1.6s ease-in-out infinite}
+.wiz__step{font-size:14px;font-weight:700;color:var(--accent-d)}
+.wiz__text{font-size:15.5px;color:var(--ink2);line-height:1.4}
+.wiz__arrow{position:absolute;width:16px;height:16px;background:var(--bg);transform:translateX(-50%) rotate(45deg)}
+.wiz__guide.is-above .wiz__arrow{bottom:-7px}.wiz__guide.is-below .wiz__arrow{top:-7px}
 
-@media (max-width:520px){
-  .hero h1{font-size:22px}
-  .task{flex-wrap:wrap}
-  .task__actions{width:100%}
-  .btn-task{flex:1}
-  .vwrap h1{font-size:24px}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-}
+.mock{border-radius:18px;box-shadow:var(--inset);padding:14px;display:grid;gap:12px;text-align:left}
+.mock__head{display:flex;align-items:center;gap:10px}
+.mock__dot{width:36px;height:36px;border-radius:12px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.mock__head small{display:block;font-size:13px;color:var(--muted)}
+.mock__part{border-radius:12px;transition:filter .3s var(--ease),opacity .3s var(--ease)}
+.mock__stars{font-size:32px;letter-spacing:4px;color:var(--accent);text-align:center;padding:6px}
+.mock__text{background:var(--bg);box-shadow:var(--raise-s);min-height:72px;padding:12px;color:var(--muted)}
+.mock__post{justify-self:end;background:var(--accent);color:#fff;font-weight:700;padding:10px 26px}
+.mock[data-step="1"] .mock__part:not([data-p="1"]),.mock[data-step="2"] .mock__part:not([data-p="2"]),.mock[data-step="3"] .mock__part:not([data-p="3"]){filter:blur(2px) grayscale(1);opacity:.4}
+.mock[data-step="1"] [data-p="1"],.mock[data-step="2"] [data-p="2"],.mock[data-step="3"] [data-p="3"]{animation:mockp 1.8s ease-in-out infinite}
+.tut__guide{display:flex;align-items:center;gap:12px;margin:16px 0;text-align:left}
+.tut__cap{color:var(--ink2);line-height:1.45;min-height:4.4em}
+#tutNext,.tut__skip{width:100%}.tut__skip{margin-top:10px;min-height:48px;font-size:16px}
+
+@keyframes steam{0%{opacity:0;transform:translateY(10px);stroke-dashoffset:30}35%{opacity:.85}100%{opacity:0;transform:translateY(-12px);stroke-dashoffset:0}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes tap{45%{transform:scale(.88)}}
+@keyframes ripple{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.9)}}
+@keyframes glow{50%{box-shadow:5px 5px 12px rgba(143,42,33,.35),-4px -4px 10px var(--hi),0 0 0 7px rgba(179,56,44,.22)}}
+@keyframes ringp{50%{box-shadow:0 0 0 10px rgba(179,56,44,.3)}}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@keyframes mockp{0%,100%{box-shadow:0 0 0 3px var(--bg),0 0 0 6px rgba(179,56,44,.7)}50%{box-shadow:0 0 0 3px var(--bg),0 0 0 10px rgba(179,56,44,.25)}}
+@media (max-width:380px){.hero h1{font-size:26px}.vwrap h1{font-size:28px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
-
 <body>
 
-<!-- ==========================================================
-     LOADING SCREEN — memutar start.mp4 saat halaman dimuat
-     ========================================================== -->
 <div class="boot" id="boot" role="status" aria-label="Memuat halaman">
   <video class="boot__video" id="bootVideo" src="start.mp4" autoplay muted playsinline preload="auto"></video>
   <div class="boot__ui">
+    <svg class="bowl" viewBox="0 0 120 100" aria-hidden="true"><defs><clipPath id="bc1"><path d="M14 52h92c0 24-17 40-46 40S14 76 14 52Z"/></clipPath></defs><g clip-path="url(#bc1)"><rect class="broth" x="0" y="52" width="120" height="42"/></g><path class="rim" d="M10 52h100M14 52c0 24 17 40 46 40s46-16 46-40"/><path class="st" d="M42 40c-6-6 6-10 0-18"/><path class="st" d="M60 40c-6-6 6-10 0-18" style="animation-delay:.5s"/><path class="st" d="M78 40c-6-6 6-10 0-18" style="animation-delay:1s"/></svg>
+    <div class="boot__brand">Soto Mbak Nie</div>
+    <div class="boot__sub">Menyiapkan voucher Anda</div>
     <div class="boot__bar"><i id="bootFill"></i></div>
-    <span>Memuat…</span>
   </div>
 </div>
 
 <div class="app">
-
-  <!-- ==========================================================
-       HALAMAN 1 — TUGAS: REVIEW GOOGLE MAPS + FOLLOW TIKTOK
-       ========================================================== -->
   <main class="page is-active" id="pageTugas" aria-labelledby="tugasTitle">
     <div class="wrap">
       <section class="hero">
+        <svg class="bowl" viewBox="0 0 120 100" aria-hidden="true"><defs><clipPath id="bc2"><path d="M14 52h92c0 24-17 40-46 40S14 76 14 52Z"/></clipPath></defs><g clip-path="url(#bc2)"><rect class="broth" x="0" y="52" width="120" height="42"/></g><path class="rim" d="M10 52h100M14 52c0 24 17 40 46 40s46-16 46-40"/><path class="st" d="M42 40c-6-6 6-10 0-18"/><path class="st" d="M60 40c-6-6 6-10 0-18" style="animation-delay:.5s"/><path class="st" d="M78 40c-6-6 6-10 0-18" style="animation-delay:1s"/></svg>
         <h1 id="tugasTitle">Klaim Voucher Free Es Teh</h1>
         <p id="heroLead">Selesaikan 2 langkah singkat di bawah ini, lalu tunjukkan voucher ke kasir di outlet mana pun.</p>
       </section>
 
-      <!-- Banner: program sudah diklaim / kedaluwarsa (tidak bisa rating lagi) -->
       <div class="lockbanner" id="lockBanner" role="status">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-        </svg>
-        <div>
-          <strong>Voucher Anda sudah diklaim</strong>
-          <span>Program ini sudah pernah diikuti dari perangkat ini, jadi review &amp; follow tidak bisa diulang.</span>
-        </div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <div><strong>Voucher Anda sudah diklaim</strong>Program ini sudah pernah diikuti dari perangkat ini, jadi review dan follow tidak bisa diulang.</div>
       </div>
 
       <section class="card card--pad">
-        <span class="card__label">Syarat &amp; Ketentuan</span>
-        <h2 class="card__title" style="margin-top:6px">Ikuti 2 langkah untuk aktivasi voucher</h2>
+        <h2 class="card__title">Syarat dan ketentuan</h2>
         <ul class="rules">
           <li><span class="n">1</span><span>Review makanan di <strong>Google Maps</strong> (minimal 1 ulasan).</span></li>
           <li><span class="n">2</span><span>Follow akun TikTok <strong>@sotombaknie.mj9</strong>.</span></li>
@@ -562,250 +263,121 @@ a{color:inherit}
         </ul>
       </section>
 
-      <!-- Kartu tugas: 2 tombol yang akan hilang setelah selesai -->
       <section class="steps" id="steps" aria-label="Tugas yang harus diselesaikan">
-
-        <!-- Tugas 1: Review Google Maps -->
         <article class="task" id="taskReview">
-          <div class="task__icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-          </div>
-          <div class="task__body">
-            <div class="task__head">
-              <span class="tag">Langkah 1</span>
-              <span class="task__title">Review di Google Maps</span>
-            </div>
-            <div class="task__desc">Beri ulasan untuk Soto Mbak Nie di halaman Google Maps.</div>
-          </div>
-          <div class="task__actions">
-            <button class="btn-task" id="btnReview" type="button">Review Sekarang</button>
-          </div>
-          <div class="task__done">
-            <svg class="check check--sm draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>
-            Review Terverifikasi
-          </div>
+          <div class="task__icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><span class="tag">Langkah 1</span><div class="task__title">Review di Google Maps</div><div class="task__desc">Beri ulasan untuk Soto Mbak Nie.</div></div>
+          <div class="task__actions"><button class="btn-task" id="btnReview" type="button">Review Sekarang</button></div>
+          <div class="task__done"><svg class="check check--sm draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>Review Terverifikasi</div>
         </article>
-
-        <!-- Tugas 2: Follow TikTok -->
         <article class="task" id="taskTiktok">
-          <div class="task__icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 18V6l10-2v12"/>
-              <circle cx="6.5" cy="18" r="2.6"/>
-              <circle cx="16.5" cy="16" r="2.6"/>
-            </svg>
-          </div>
-          <div class="task__body">
-            <div class="task__head">
-              <span class="tag">Langkah 2</span>
-              <span class="task__title">Follow TikTok</span>
-            </div>
-            <div class="task__desc">Ikuti akun <strong>@sotombaknie.mj9</strong> di TikTok.</div>
-          </div>
-          <div class="task__actions">
-            <button class="btn-task" id="btnTiktok" type="button">Follow Sekarang</button>
-          </div>
-          <div class="task__done">
-            <svg class="check check--sm draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>
-            Akun Di-Follow
-          </div>
+          <div class="task__icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.6"/><circle cx="16.5" cy="16" r="2.6"/></svg></div>
+          <div><span class="tag">Langkah 2</span><div class="task__title">Follow TikTok</div><div class="task__desc">Ikuti akun <strong>@sotombaknie.mj9</strong>.</div></div>
+          <div class="task__actions"><button class="btn-task" id="btnTiktok" type="button">Follow Sekarang</button></div>
+          <div class="task__done"><svg class="check check--sm draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>Akun Di-Follow</div>
         </article>
-
       </section>
 
-      <!-- Panel sukses (muncul setelah 2 tombol dihilangkan) -->
       <section class="success" id="successPanel">
-        <div class="success__icon" aria-hidden="true">
-          <svg class="check check--sm draw" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>
-        </div>
-        <div>
-          <div class="success__title">Semua langkah selesai</div>
-          <div class="success__desc">Voucher Free Es Teh kamu sudah siap diklaim.</div>
-        </div>
+        <div class="success__icon" aria-hidden="true"><svg class="check check--sm draw" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg></div>
+        <div><div class="success__title">Semua langkah selesai</div><div class="success__desc">Voucher Free Es Teh Anda siap diklaim.</div></div>
       </section>
     </div>
   </main>
 
-  <!-- ==========================================================
-       HALAMAN 2 — TERIMA VOUCHER
-       ========================================================== -->
   <main class="page" id="pageVoucher" aria-labelledby="voucherTitle">
-    <div class="wrap">
-      <div class="vwrap">
-        <!-- Logo centang besar -->
-        <svg class="bigcheck" id="bigCheck" viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r="54" pathLength="1"/>
-          <path d="M36 62l16 16 32-36" pathLength="1"/>
-        </svg>
-
-        <h1 id="voucherTitle">Terima kasih!</h1>
-        <p class="lead" id="voucherLead">Voucher Free Es Teh kamu sudah berhasil diklaim. Simpan halaman ini dan tunjukkan ke kasir.</p>
-
-        <!-- Kartu voucher (kode voucher tidak ditampilkan di halaman) -->
-        <div class="voucher">
-          <div class="voucher__top">
-            <span class="voucher__badge">VOUCHER</span>
-            <span class="voucher__brand">Soto Mbak Nie</span>
-          </div>
-          <div class="voucher__body">
-            <div class="voucher__value">Free 1 Es Teh</div>
-            <div class="voucher__meta">Berlaku di seluruh outlet · masa berlaku 3 hari</div>
-            <div class="voucher__countdown" id="voucherCountdown">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
-              </svg>
-              <span id="voucherCountdownText">Berlaku 3 hari lagi</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Petunjuk ke kasir -->
-        <div class="instruct">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/>
-          </svg>
-          <span><strong>Tunjukkan halaman ini ke kasir untuk mendapatkan voucher free es teh.</strong><br>Status pemakaian voucher hanya diketahui oleh kasir melalui sistem kami.</span>
-        </div>
-
-        <!-- Status klaim + navigasi -->
-        <div class="claimbox">
-          <span class="status is-hidden" id="claimStatus">
-            <svg class="check check--sm draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>
-            Halaman telah diklaim
-          </span>
-          <button class="btn btn-ghost" id="btnBack" type="button">Kembali ke Halaman Tugas</button>
-        </div>
-
-        <p class="foot">
-          Voucher ini berlaku untuk 1 pcs es teh per struk dan tidak dapat dikombinasikan dengan promo lain.<br />
-          Masa berlaku voucher adalah 3 hari sejak halaman voucher pertama dibuka.<br />
-        </p>
+    <div class="wrap"><div class="vwrap">
+      <div class="bigwrap">
+        <svg class="bigcheck" id="bigCheck" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="50" pathLength="1"/><path d="M38 62l16 16 30-34" pathLength="1"/></svg>
       </div>
-    </div>
+      <h1 id="voucherTitle">Terima kasih!</h1>
+      <p class="lead" id="voucherLead">Voucher Free Es Teh Anda sudah berhasil diklaim. Simpan halaman ini dan tunjukkan ke kasir.</p>
+      <div class="vbox"><div class="voucher">
+        <div class="voucher__top"><span class="voucher__badge">Voucher</span><span class="voucher__brand">Soto Mbak Nie</span></div>
+        <div class="voucher__body">
+          <div class="voucher__value">Free 1 Es Teh</div>
+          <div class="voucher__meta">Berlaku di semua outlet, masa berlaku 3 hari</div>
+          <div class="voucher__countdown" id="voucherCountdown">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span id="voucherCountdownText">Berlaku 3 hari lagi</span>
+          </div>
+        </div>
+      </div></div>
+      <div class="instruct">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+        <span><strong>Tunjukkan halaman ini ke kasir untuk mendapatkan voucher free es teh.</strong><br>Status pemakaian voucher hanya diketahui oleh kasir melalui sistem kami.</span>
+      </div>
+      <div class="claimbox">
+        <span class="status is-hidden" id="claimStatus"><svg class="check check--sm draw" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>Halaman telah diklaim</span>
+        <button class="btn btn-ghost" id="btnBack" type="button">Kembali ke Halaman Tugas</button>
+      </div>
+      <p class="foot">Voucher ini berlaku untuk 1 pcs es teh per struk dan tidak dapat dikombinasikan dengan promo lain.<br />Masa berlaku voucher adalah 3 hari sejak halaman voucher pertama dibuka.</p>
+    </div></div>
   </main>
 
-  <!-- ==========================================================
-       HALAMAN 3 — VOUCHER KEDALUWARSA
-       ========================================================== -->
   <main class="page" id="pageExpired" aria-labelledby="expiredTitle">
-    <div class="wrap">
-      <div class="vwrap">
-        <div class="expired__icon" aria-hidden="true">
-          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
-          </svg>
-        </div>
-
-        <h1 id="expiredTitle">Voucher Kedaluwarsa</h1>
-        <p class="lead">Masa berlaku voucher Free Es Teh sudah habis (3 hari). Program ini tidak bisa diikuti lagi dari perangkat ini.</p>
-
-        <div class="expired__box">
-          <div class="expired__value">Free 1 Es Teh</div>
-          <div class="expired__state">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18"/>
-            </svg>
-            Kedaluwarsa
-          </div>
-        </div>
-
-        <button class="btn btn-primary" id="btnExpiredBack" type="button">Kembali ke Halaman Tugas</button>
-
-        <p class="foot">
-          Voucher telah berakhir masa berlakunya. Butuh voucher lagi? Silakan hubungi kasir atau admin kami.
-        </p>
-      </div>
-    </div>
+    <div class="wrap"><div class="vwrap">
+      <div class="expired__icon" aria-hidden="true"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <h1 id="expiredTitle">Voucher Kedaluwarsa</h1>
+      <p class="lead">Masa berlaku voucher Free Es Teh sudah habis (3 hari). Program ini tidak bisa diikuti lagi dari perangkat ini.</p>
+      <div class="expired__box"><div class="expired__value">Free 1 Es Teh</div><div class="expired__state"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>Kedaluwarsa</div></div>
+      <button class="btn btn-primary" id="btnExpiredBack" type="button">Kembali ke Halaman Tugas</button>
+      <p class="foot">Butuh voucher lagi? Silakan hubungi kasir atau admin kami.</p>
+    </div></div>
   </main>
 
-  <!-- ==========================================================
-       HALAMAN 4 — TERKUNCI (muncul setelah 5x ketuk centang)
-       ========================================================== -->
   <main class="page" id="pageLocked" aria-label="Voucher sudah diklaim">
     <img class="locked__img" id="lockedImg" src="success.jpg" alt="Voucher sudah diklaim" />
     <p class="locked__fb" id="lockedFb" hidden>Voucher sudah diklaim</p>
   </main>
 </div>
 
-<!-- ==========================================================
-     DOCK: PROGRESS + TOMBOL LANJUT
-     ========================================================== -->
 <div class="dock" id="dock">
   <div class="dock__inner">
-    <div class="dock__meta">
-      <span>Progres tugas</span>
-      <span><strong id="progressCount">0/2</strong> langkah selesai</span>
-    </div>
+    <div class="dock__meta"><span>Progres tugas</span><span><strong id="progressCount">0/2</strong> langkah selesai</span></div>
     <div class="bar"><div class="bar__fill" id="progressFill"></div></div>
-    <button class="btn btn-primary btn--enter" id="btnNext" type="button" disabled>
-      Lanjut ke Voucher
-    </button>
-    <p class="hint" id="dockHint">Selesaikan review &amp; follow terlebih dahulu.</p>
+    <button class="btn btn-primary btn--enter" id="btnNext" type="button" disabled>Lanjut ke Voucher</button>
+    <p class="hint" id="dockHint">Selesaikan review dan follow terlebih dahulu.</p>
   </div>
 </div>
 
-<!-- ==========================================================
-     WIZARD SPOTLIGHT: latar gelap + blur + abu-abu, gambar pointchick.jpg
-     ========================================================== -->
 <div class="wiz" id="wiz" aria-live="polite">
   <div class="wiz__shade" id="wizShade"></div>
   <div class="wiz__ring" id="wizRing"></div>
   <div class="wiz__guide is-below" id="wizGuide">
     <i class="wiz__arrow" id="wizArrow"></i>
     <img class="wiz__img" id="wizImg" src="pointchick.jpg" alt="" width="76" height="76" />
-    <div>
-      <div class="wiz__step" id="wizStep">Langkah 1 dari 2</div>
-      <div class="wiz__text" id="wizText"></div>
-    </div>
+    <div><div class="wiz__step" id="wizStep">Langkah 1 dari 2</div><div class="wiz__text" id="wizText"></div></div>
   </div>
 </div>
 
-<!-- ==========================================================
-     MODAL: LOADING -> CENTANG -> TOMBOL LANJUT
-     ========================================================== -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal__box">
     <p class="modal__task" id="modalTask">Review di Google Maps</p>
-
-    <!-- state: loading -->
     <div class="loader">
-      <div class="spinner" role="status" aria-label="Memproses"></div>
+      <svg class="bowl" viewBox="0 0 120 100" role="status" aria-label="Memproses"><defs><clipPath id="bc3"><path d="M14 52h92c0 24-17 40-46 40S14 76 14 52Z"/></clipPath></defs><g clip-path="url(#bc3)"><rect class="broth" x="0" y="52" width="120" height="42"/></g><path class="rim" d="M10 52h100M14 52c0 24 17 40 46 40s46-16 46-40"/><path class="st" d="M42 40c-6-6 6-10 0-18"/><path class="st" d="M60 40c-6-6 6-10 0-18" style="animation-delay:.5s"/><path class="st" d="M78 40c-6-6 6-10 0-18" style="animation-delay:1s"/></svg>
       <div class="pbar"><div class="pbar__fill" id="pbarFill"></div></div>
       <p class="pcount" id="pcount">Sisa waktu 5 detik</p>
     </div>
-
-    <!-- state: sukses -->
     <div class="result">
       <svg class="check" id="modalCheck" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24" pathLength="1"/><path d="M14 27l8 8 16-17" pathLength="1"/></svg>
       <h2 class="modal__title" id="modalTitle">Berhasil!</h2>
       <p class="modal__desc" id="modalDesc">Ulasan Anda telah tercatat.</p>
     </div>
-
-    <div class="modal__action">
-      <button class="btn btn-primary btn--enter" id="btnModalNext" type="button">Lanjut</button>
-    </div>
+    <div class="modal__action"><button class="btn btn-primary btn--enter" id="btnModalNext" type="button">Lanjut</button></div>
   </div>
 </div>
 
-<!-- ==========================================================
-     TUTORIAL: cara mengisi review (tampil sebelum Google Maps dibuka)
-     ========================================================== -->
 <div class="modal" id="tut" role="dialog" aria-modal="true" aria-labelledby="tutCap">
   <div class="modal__box">
-    <p class="modal__task">Cara mengisi review · <span id="tutNum">1/3</span></p>
+    <p class="modal__task">Cara mengisi review (<span id="tutNum">1/3</span>)</p>
     <div class="mock" id="mock" data-step="1" aria-hidden="true">
       <div class="mock__head"><span class="mock__dot">SMN</span><div><b>Soto Mbak Nie</b><small>Contoh tampilan</small></div></div>
       <div class="mock__part mock__stars" data-p="1">★★★★★</div>
       <div class="mock__part mock__text" data-p="2">Ceritakan pengalaman Anda…</div>
       <div class="mock__part mock__post" data-p="3">Kirim</div>
     </div>
-    <div class="tut__guide">
-      <img class="wiz__img" id="tutImg" src="pointchick.jpg" alt="" width="76" height="76" />
-      <p class="tut__cap" id="tutCap"></p>
-    </div>
+    <div class="tut__guide"><img class="wiz__img" id="tutImg" src="pointchick.jpg" alt="" width="76" height="76" /><p class="tut__cap" id="tutCap"></p></div>
     <button class="btn btn-primary" id="tutNext" type="button">Lanjut</button>
     <button class="btn btn-ghost tut__skip" id="tutSkip" type="button">Lewati, langsung buka Google Maps</button>
   </div>
@@ -814,369 +386,156 @@ a{color:inherit}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* ============================================================
-   PROGRAM REWARD — SOTO MBAK NIE
-   ------------------------------------------------------------
-   CATATAN PRODUKSI (komentar ini tidak tampil di halaman):
-
-   File pendukung (taruh satu folder dengan halaman ini):
-     start.mp4      : video loading screen.
-     pointchick.jpg : gambar penunjuk di wizard spotlight.
-     success.jpg    : gambar halaman terkunci (landscape, muat layar).
-
-   Penyimpanan (localStorage, 100% client-side / serverless):
-     smn_voucher_created_at : timestamp voucher dibuat (saat halaman
-                              voucher pertama kali dibuka) -> masa
-                              berlaku dikontrol CONFIG.validDays.
-     smn_voucher_claimed    : 1 = voucher telah diklaim (gesture
-                              ketuk centang CONFIG.claimClicks kali).
-     smn_voucher_locked     : 1 = program terkunci di perangkat ini
-                              (sudah diklaim / kedaluwarsa).
-     smn_task_review        : 1 = tugas review Google Maps selesai.
-     smn_task_tiktok        : 1 = tugas follow TikTok selesai.
-
-   Gesture kasir/pemilik:
-     Ketuk logo centang di halaman voucher CONFIG.claimClicks kali
-     dengan jeda <= CONFIG.claimWindowMs -> halaman berstatus
-     halaman terkunci (#/locked) berisi success.jpg layar penuh.
-     Gesture ini sengaja tersembunyi.
-
-   Batasan yang penting dipahami pemilik usaha:
-     Status "sudah dipakai"/"belum dipakai" hanya tersimpan di
-     browser pelanggan (serverless). Halaman ini TIDAK bisa menjadi
-     bukti satu-satunya bahwa voucher belum pernah ditukar.
-     Verifikasi tetap harus lewat sistem kasir, lalu
-     applyClaimState()/lockProgram() di bawah adalah titik yang
-     tepat diganti dgn panggilan API saat backend tersedia.
-   ============================================================ */
+/* File pendukung (satu folder): start.mp4 (loading), pointchick.jpg (penunjuk), success.jpg (halaman terkunci).
+   localStorage: smn_voucher_created_at, smn_voucher_claimed, smn_voucher_locked, smn_task_review, smn_task_tiktok.
+   Gesture kasir: ketuk centang besar di halaman voucher CONFIG.claimClicks kali cepat => halaman terkunci.
+   Catatan: status voucher hanya di browser pelanggan (tanpa server); verifikasi tetap lewat sistem kasir. */
 const CONFIG = {
-  brand         : 'Soto Mbak Nie',
-  tiktokHandle  : 'sotombaknie.mj9',
-  mapsUrl       : 'https://www.google.com/maps/search/?api=1&query=Soto%20Mbak%20Nie',
-  tiktokUrl     : 'https://www.tiktok.com/@sotombaknie.mj9',
-  voucherValue  : 'Free 1 Es Teh',
-  validDays     : 3,        // masa berlaku voucher (hari)
-  claimClicks   : 5,        // jumlah ketukan cepat pada logo centang
-  claimWindowMs : 1200,     // maks jeda antar ketukan (ms)
-  processingMs  : 5000,     // durasi loading (ms) -> 5 detik
-  bootMaxMs     : 20000,    // batas maksimum loading screen (ms) bila video bermasalah
-  openRealLinks : true      // true: buka Google Maps / TikTok di tab baru
+  tiktokHandle:'sotombaknie.mj9',
+  mapsUrl:'https://www.google.com/maps/search/?api=1&query=Soto%20Mbak%20Nie',
+  tiktokUrl:'https://www.tiktok.com/@sotombaknie.mj9',
+  validDays:3, claimClicks:5, claimWindowMs:1200, processingMs:5000, bootMaxMs:20000, openRealLinks:true
 };
-
-/* KEY localStorage */
-const KEY = {
-  created   : 'smn_voucher_created_at',
-  claimed   : 'smn_voucher_claimed',
-  locked    : 'smn_voucher_locked',
-  taskReview: 'smn_task_review',
-  taskTiktok: 'smn_task_tiktok'
-};
-
-/* ============================================================
-   ELEMEN
-   ============================================================ */
-const $ = (sel, root = document) => root.querySelector(sel);
+const KEY = { created:'smn_voucher_created_at', claimed:'smn_voucher_claimed', locked:'smn_voucher_locked', taskReview:'smn_task_review', taskTiktok:'smn_task_tiktok' };
+const $ = (s, r = document) => r.querySelector(s);
 const el = {
-  pageTugas   : $('#pageTugas'),
-  pageVoucher : $('#pageVoucher'),
-  pageExpired : $('#pageExpired'),
-  pageLocked  : $('#pageLocked'),
-  steps       : $('#steps'),
-  success     : $('#successPanel'),
-  lockBanner  : $('#lockBanner'),
-  heroTitle   : $('#tugasTitle'),
-  heroLead    : $('#heroLead'),
-  btnReview   : $('#btnReview'),
-  btnTiktok   : $('#btnTiktok'),
-  taskReview  : $('#taskReview'),
-  taskTiktok  : $('#taskTiktok'),
-  btnNext     : $('#btnNext'),
-  dock        : $('#dock'),
-  dockHint    : $('#dockHint'),
-  progressCount: $('#progressCount'),
-  progressFill : $('#progressFill'),
-  modal       : $('#modal'),
-  modalTask   : $('#modalTask'),
-  modalTitle  : $('#modalTitle'),
-  modalDesc   : $('#modalDesc'),
-  modalCheck  : $('#modalCheck'),
-  pbarFill    : $('#pbarFill'),
-  pcount      : $('#pcount'),
-  btnModalNext: $('#btnModalNext'),
-  bigCheck    : $('#bigCheck'),
-  claimStatus : $('#claimStatus'),
-  voucherLead : $('#voucherLead'),
-  voucherCountdown: $('#voucherCountdown'),
-  voucherCountdownText: $('#voucherCountdownText'),
-  btnBack     : $('#btnBack'),
-  btnExpiredBack: $('#btnExpiredBack'),
-  toast       : $('#toast')
+  pageTugas:$('#pageTugas'), pageVoucher:$('#pageVoucher'), pageExpired:$('#pageExpired'), pageLocked:$('#pageLocked'),
+  steps:$('#steps'), success:$('#successPanel'), lockBanner:$('#lockBanner'), heroTitle:$('#tugasTitle'), heroLead:$('#heroLead'),
+  btnReview:$('#btnReview'), btnTiktok:$('#btnTiktok'), taskReview:$('#taskReview'), taskTiktok:$('#taskTiktok'),
+  btnNext:$('#btnNext'), dock:$('#dock'), dockHint:$('#dockHint'), progressCount:$('#progressCount'), progressFill:$('#progressFill'),
+  modal:$('#modal'), modalTask:$('#modalTask'), modalTitle:$('#modalTitle'), modalDesc:$('#modalDesc'), modalCheck:$('#modalCheck'),
+  pbarFill:$('#pbarFill'), pcount:$('#pcount'), btnModalNext:$('#btnModalNext'), bigCheck:$('#bigCheck'), claimStatus:$('#claimStatus'),
+  voucherLead:$('#voucherLead'), voucherCountdown:$('#voucherCountdown'), voucherCountdownText:$('#voucherCountdownText'),
+  btnBack:$('#btnBack'), btnExpiredBack:$('#btnExpiredBack')
 };
+const state = { done:{review:false, tiktok:false}, active:null, finished:false, claimed:false, locked:false, booted:false, clicks:0, lastClick:0, timer:null };
 
-/* ============================================================
-   STATE
-   ============================================================ */
-const state = {
-  done     : { review:false, tiktok:false },
-  active   : null,   // tugas yang sedang diproses di modal
-  finished : false,  // modal sudah sampai tahap centang
-  claimed  : false,  // voucher sudah diklaim
-  locked   : false,  // program terkunci (tidak bisa rating lagi)
-  booted   : false,  // loading screen sudah selesai
-  clicks   : 0,      // hitungan ketukan cepat
-  lastClick: 0,
-  timer    : null    // interval countdown masa berlaku
-};
-
-/* ============================================================
-   UTILITAS
-   ============================================================ */
-function toast(msg){
-  el.toast.textContent = msg;
-  el.toast.classList.add('is-show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => el.toast.classList.remove('is-show'), 2200);
-}
-function openLinks(url){
-  if (CONFIG.openRealLinks && url) window.open(url, '_blank', 'noopener');
-}
-/* kunci scroll halaman selagi modal terbuka */
+const openLinks = u => { if (CONFIG.openRealLinks && u) window.open(u, '_blank', 'noopener'); };
 function lockScroll(on){
   document.body.style.overflow = on ? 'hidden' : '';
   [el.pageTugas, el.pageVoucher, el.pageExpired].forEach(p => { p.style.overflowY = on ? 'hidden' : ''; });
 }
-function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
-function lsSet(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
-function lsDel(k){ try { localStorage.removeItem(k); } catch(e){} }
+const lsGet = k => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch(e){} };
 
-/* ============================================================
-   1. VOUCHER: MASA BERLAKU 3 HARI
-   (dihitung sejak halaman voucher pertama kali dibuka)
-   ============================================================ */
-function voucherCreatedAt(){ const v = parseInt(lsGet(KEY.created) || '0', 10); return isNaN(v) ? 0 : v; }
-function voucherExpiresAt(){ const c = voucherCreatedAt(); return c ? c + CONFIG.validDays * 86400000 : 0; }
-function ensureVoucherCreated(){ if (!voucherCreatedAt()) lsSet(KEY.created, String(Date.now())); }
-function isExpired(){ const e = voucherExpiresAt(); return !!e && Date.now() >= e; }
-function isClaimed(){ return lsGet(KEY.claimed) === '1'; }
-function isLocked(){ return lsGet(KEY.locked) === '1'; }
-
+/* masa berlaku */
+const voucherCreatedAt = () => { const v = parseInt(lsGet(KEY.created) || '0', 10); return isNaN(v) ? 0 : v; };
+const voucherExpiresAt = () => { const c = voucherCreatedAt(); return c ? c + CONFIG.validDays * 86400000 : 0; };
+const ensureVoucherCreated = () => { if (!voucherCreatedAt()) lsSet(KEY.created, String(Date.now())); };
+const isExpired = () => { const e = voucherExpiresAt(); return !!e && Date.now() >= e; };
+const isClaimed = () => lsGet(KEY.claimed) === '1';
+const isLocked = () => lsGet(KEY.locked) === '1';
 function fmtRemain(ms){
-  const total = Math.max(0, Math.floor(ms / 1000));
-  const d = Math.floor(total / 86400);
-  const h = Math.floor((total % 86400) / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  if (d > 0) return d + ' hari ' + h + ' jam ' + m + ' mnt';
-  if (h > 0) return h + ' jam ' + m + ' mnt';
-  return m + ' mnt ' + s + ' dtk';
+  const t = Math.max(0, Math.floor(ms / 1000)), d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600), m = Math.floor(t % 3600 / 60), s = t % 60;
+  return d > 0 ? d + ' hari ' + h + ' jam ' + m + ' mnt' : h > 0 ? h + ' jam ' + m + ' mnt' : m + ' mnt ' + s + ' dtk';
 }
 
-/* ============================================================
-   2. KUNCI PROGRAM — tidak bisa rating/follow lagi
-   ============================================================ */
-function lockProgram(){
-  lsSet(KEY.locked, '1');
-  state.locked = true;
-  applyLockUI();
-}
+/* kunci program */
+function lockProgram(){ lsSet(KEY.locked, '1'); state.locked = true; applyLockUI(); }
 function applyLockUI(){
   const locked = isLocked();
   state.locked = locked;
-
   el.lockBanner.classList.toggle('is-visible', locked);
   el.steps.classList.toggle('is-locked', locked);
-  el.btnReview.disabled = locked;
-  el.btnTiktok.disabled = locked;
-
+  el.btnReview.disabled = locked; el.btnTiktok.disabled = locked;
   if (locked){
-    el.btnNext.disabled = true;
-    el.btnNext.classList.remove('btn--pulse');
-    el.dockHint.textContent = 'Voucher sudah diklaim — program tidak bisa dilanjutkan.';
+    el.btnNext.disabled = true; el.btnNext.classList.remove('btn--pulse');
+    el.dockHint.textContent = 'Voucher sudah diklaim, program tidak bisa dilanjutkan.';
     el.heroTitle.textContent = 'Program Sudah Diklaim';
     el.heroLead.textContent = 'Voucher Anda sudah diklaim atau masa berlakunya habis. Program ini tidak bisa diikuti lagi dari perangkat ini.';
-    el.success.classList.remove('is-visible');   // panel "siap diklaim" tidak relevan
+    el.success.classList.remove('is-visible');
     wizHide();
   }
 }
 
-/* ============================================================
-   3. TUGAS: REVIEW GOOGLE MAPS & FOLLOW TIKTOK
-   ============================================================ */
+/* tugas */
 function startTask(kind){
   if (state.done[kind] || isLocked()) return;
-
   const cfg = {
-    review : {
-      title:'Review di Google Maps',
-      desc :'Ulasan Anda telah tercatat. Terima kasih sudah membantu!',
-      url   : CONFIG.mapsUrl
-    },
-    tiktok : {
-      title:'Follow Akun TikTok',
-      desc :'Berhasil mengikuti @' + CONFIG.tiktokHandle + '. Terima kasih!',
-      url   : CONFIG.tiktokUrl
-    }
+    review:{ title:'Review di Google Maps', desc:'Ulasan Anda telah tercatat. Terima kasih sudah membantu!', url:CONFIG.mapsUrl },
+    tiktok:{ title:'Follow Akun TikTok', desc:'Berhasil mengikuti @' + CONFIG.tiktokHandle + '. Terima kasih!', url:CONFIG.tiktokUrl }
   }[kind];
-
-  state.active   = kind;
-  state.finished = false;
-  wizHide();                                  // sembunyikan spotlight selagi modal terbuka
-  el.modalTask.textContent = cfg.title;
-  el.modalTitle.textContent = 'Berhasil!';
-  el.modalDesc.textContent = cfg.desc;
-  el.pbarFill.style.width = '0%';
+  state.active = kind; state.finished = false;
+  wizHide();
+  el.modalTask.textContent = cfg.title; el.modalTitle.textContent = 'Berhasil!'; el.modalDesc.textContent = cfg.desc;
+  el.pbarFill.style.width = '0%'; el.modal.style.setProperty('--p', 0);
   el.pcount.textContent = 'Sisa waktu ' + Math.round(CONFIG.processingMs / 1000) + ' detik';
-
-  // buka halaman asli (Google Maps / TikTok) di tab baru
   openLinks(cfg.url);
-
-  // tampilkan modal dalam keadaan loading
-  el.modal.classList.remove('is-success');
-  el.modal.classList.add('is-loading', 'is-open');
+  el.modal.classList.remove('is-success'); el.modal.classList.add('is-loading', 'is-open');
   lockScroll(true);
-
   runProgress(CONFIG.processingMs);
 }
-
-/* Progress bar + hitung mundur, setelah selesai -> centang + tombol Lanjut */
 function runProgress(duration){
   const start = performance.now();
-  function frame(now){
-    const elapsed = now - start;
-    const p = Math.min(1, elapsed / duration);
-
+  (function frame(now){
+    const elapsed = now - start, p = Math.min(1, elapsed / duration);
     el.pbarFill.style.width = (p * 100).toFixed(2) + '%';
-
+    el.modal.style.setProperty('--p', p.toFixed(3));
     const remain = Math.max(0, Math.ceil((duration - elapsed) / 1000));
     el.pcount.textContent = remain > 0 ? 'Sisa waktu ' + remain + ' detik' : 'Memproses…';
-
-    if (p < 1){
-      requestAnimationFrame(frame);
-    } else {
-      finishTask();
-    }
-  }
-  requestAnimationFrame(frame);
+    if (p < 1) requestAnimationFrame(frame); else finishTask();
+  })(start);
 }
-
-/* Selesai: modal berubah jadi centang + tombol "Lanjut" (animasi) */
 function finishTask(){
   state.finished = true;
-  el.modal.classList.remove('is-loading');
-  el.modal.classList.add('is-success');
-  el.modalCheck.classList.remove('draw');
-  void el.modalCheck.offsetWidth;            // restart animasi
-  el.modalCheck.classList.add('draw');
+  el.modal.classList.remove('is-loading'); el.modal.classList.add('is-success');
+  el.modalCheck.classList.remove('draw'); void el.modalCheck.offsetWidth; el.modalCheck.classList.add('draw');
   setTimeout(() => el.btnModalNext.focus(), 320);
 }
-
-/* Klik "Lanjut" di modal -> tutup modal + tandai tugas selesai */
 function closeModal(){
-  el.modal.classList.remove('is-open');
-  lockScroll(false);
-  const kind = state.active;
-  state.active = null;
-
+  el.modal.classList.remove('is-open'); lockScroll(false);
+  const kind = state.active; state.active = null;
   if (kind && state.finished && !state.done[kind]){
     state.done[kind] = true;
     lsSet(kind === 'review' ? KEY.taskReview : KEY.taskTiktok, '1');
-    const card = { review: el.taskReview, tiktok: el.taskTiktok }[kind];
-    card.classList.add('is-done');           // tombol hilang, diganti status centang
+    ({ review:el.taskReview, tiktok:el.taskTiktok }[kind]).classList.add('is-done');
     updateProgress();
   }
   state.finished = false;
-  updateWizard();                            // lanjut ke langkah berikutnya (atau tampil ulang bila belum selesai)
+  updateWizard();
 }
-
-/* Perbarui bar progres + tombol lanjut utama */
 function updateProgress(){
   const count = (state.done.review ? 1 : 0) + (state.done.tiktok ? 1 : 0);
   el.progressCount.textContent = count + '/2';
   el.progressFill.style.width = (count / 2 * 100) + '%';
-
   if (isLocked()){
-    // program terkunci: tombol review & follow tidak bisa dipakai lagi
-    el.steps.classList.remove('is-cleared');
-    el.btnNext.disabled = true;
-    el.dockHint.textContent = 'Voucher sudah diklaim — program tidak bisa dilanjutkan.';
+    el.steps.classList.remove('is-cleared'); el.btnNext.disabled = true;
+    el.dockHint.textContent = 'Voucher sudah diklaim, program tidak bisa dilanjutkan.';
     return;
   }
-
   if (count === 2){
-    // 2 tombol review & follow dihilangkan dengan animasi
     el.steps.classList.add('is-cleared');
     setTimeout(() => {
       el.success.classList.add('is-visible');
-      el.btnNext.disabled = false;
-      el.btnNext.classList.remove('btn--enter');
-      el.btnNext.classList.add('btn--pulse');
+      el.btnNext.disabled = false; el.btnNext.classList.remove('btn--enter'); el.btnNext.classList.add('btn--pulse');
       el.dockHint.textContent = 'Semua syarat terpenuhi. Lanjut ke voucher!';
     }, 380);
-  } else {
-    el.dockHint.textContent = 'Selesaikan review & follow terlebih dahulu.';
-  }
+  } else el.dockHint.textContent = 'Selesaikan review dan follow terlebih dahulu.';
 }
 
-/* ============================================================
-   4. WIZARD SPOTLIGHT — pointchick.jpg menunjuk tombol aktif
-      (review dulu, lalu follow). Latar gelap + blur + abu-abu;
-      area tombol dilubangi (clip-path) sehingga tetap bisa diklik.
-   ============================================================ */
-const wiz = {
-  root : $('#wiz'), shade: $('#wizShade'), ring: $('#wizRing'),
-  guide: $('#wizGuide'), arrow: $('#wizArrow'), img: $('#wizImg'),
-  step : $('#wizStep'), text: $('#wizText'),
-  target: null, t: null
-};
-wiz.img.addEventListener('error', () => { wiz.img.style.display = 'none'; });   // jika gambar tidak ada
-
-function wizHide(){
-  clearTimeout(wiz.t);
-  wiz.target = null;
-  wiz.root.classList.remove('is-on');
-}
+/* spotlight */
+const wiz = { root:$('#wiz'), shade:$('#wizShade'), ring:$('#wizRing'), guide:$('#wizGuide'), arrow:$('#wizArrow'), img:$('#wizImg'), step:$('#wizStep'), text:$('#wizText'), target:null, t:null };
+wiz.img.addEventListener('error', () => { wiz.img.style.display = 'none'; });
+function wizHide(){ clearTimeout(wiz.t); wiz.target = null; wiz.root.classList.remove('is-on'); }
 function wizPlace(){
-  const t = wiz.target;
-  if (!t) return;
-  const r = t.getBoundingClientRect();
-  const pad = 8, rad = 16, W = window.innerWidth, H = window.innerHeight;
+  const t = wiz.target; if (!t) return;
+  const r = t.getBoundingClientRect(), pad = 8, rad = 18, W = innerWidth, H = innerHeight;
   const x = r.left - pad, y = r.top - pad, w = r.width + pad * 2, h = r.height + pad * 2;
-
-  // layar penuh dikurangi lubang rounded-rect (evenodd)
-  const d = 'M0 0H' + W + 'V' + H + 'H0Z' +
-    ' M' + (x+rad) + ' ' + y + 'H' + (x+w-rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + (x+w) + ' ' + (y+rad) +
-    'V' + (y+h-rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + (x+w-rad) + ' ' + (y+h) +
-    'H' + (x+rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + x + ' ' + (y+h-rad) +
-    'V' + (y+rad) + 'A' + rad + ' ' + rad + ' 0 0 1 ' + (x+rad) + ' ' + y + 'Z';
+  const d = 'M0 0H'+W+'V'+H+'H0Z M'+(x+rad)+' '+y+'H'+(x+w-rad)+'A'+rad+' '+rad+' 0 0 1 '+(x+w)+' '+(y+rad)+'V'+(y+h-rad)+'A'+rad+' '+rad+' 0 0 1 '+(x+w-rad)+' '+(y+h)+'H'+(x+rad)+'A'+rad+' '+rad+' 0 0 1 '+x+' '+(y+h-rad)+'V'+(y+rad)+'A'+rad+' '+rad+' 0 0 1 '+(x+rad)+' '+y+'Z';
   const clip = 'path(evenodd, "' + d + '")';
-  wiz.shade.style.clipPath = clip;
-  wiz.shade.style.webkitClipPath = clip;
-
-  Object.assign(wiz.ring.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
-
-  // kartu pointchick di atas tombol bila tombol ada di separuh bawah layar
+  wiz.shade.style.clipPath = clip; wiz.shade.style.webkitClipPath = clip;
+  Object.assign(wiz.ring.style, { left:x+'px', top:y+'px', width:w+'px', height:h+'px' });
   const above = (y + h / 2) > H * 0.5;
-  wiz.guide.classList.toggle('is-above', above);
-  wiz.guide.classList.toggle('is-below', !above);
+  wiz.guide.classList.toggle('is-above', above); wiz.guide.classList.toggle('is-below', !above);
   wiz.guide.style.top = (above ? y - 14 : y + h + 14) + 'px';
-
-  // panah mengarah ke tengah tombol
   const gw = wiz.guide.offsetWidth, gl = W / 2 - gw / 2;
-  const ax = Math.min(gw - 30, Math.max(30, r.left + r.width / 2 - gl));
-  wiz.arrow.style.left = ax + 'px';
+  wiz.arrow.style.left = Math.min(gw - 30, Math.max(30, r.left + r.width / 2 - gl)) + 'px';
 }
 function updateWizard(){
   clearTimeout(wiz.t);
-  const onTugas = el.pageTugas.classList.contains('is-active');
   const kind = !state.done.review ? 'review' : (!state.done.tiktok ? 'tiktok' : null);
-
-  if (!state.booted || !onTugas || isLocked() || !kind || el.modal.classList.contains('is-open') || tut.root.classList.contains('is-open')){
-    wizHide();
-    return;
-  }
-
+  if (!state.booted || !el.pageTugas.classList.contains('is-active') || isLocked() || !kind || el.modal.classList.contains('is-open') || tut.root.classList.contains('is-open')){ wizHide(); return; }
   wiz.root.classList.remove('is-on');
-  // tunggu transisi halaman / animasi kartu selesai sebelum mengukur posisi
   wiz.t = setTimeout(() => {
     const target = kind === 'review' ? el.btnReview : el.btnTiktok;
     wiz.target = target;
@@ -1184,58 +543,40 @@ function updateWizard(){
     wiz.text.innerHTML = kind === 'review'
       ? 'Tekan <strong>Review Sekarang</strong> untuk melihat cara mengisi, lalu beri ulasan di Google Maps.'
       : 'Terakhir, tekan <strong>Follow Sekarang</strong> untuk follow @' + CONFIG.tiktokHandle + '.';
-    target.scrollIntoView({ block: 'center' });
+    target.scrollIntoView({ block:'center' });
     requestAnimationFrame(() => { wizPlace(); wiz.root.classList.add('is-on'); });
   }, 520);
 }
-window.addEventListener('resize', () => { if (wiz.target) wizPlace(); });
+addEventListener('resize', () => { if (wiz.target) wizPlace(); });
 
-/* ============================================================
-   5. ROUTING HALAMAN (#/tugas, #/voucher, #/expired)
-   ============================================================ */
-function playBigCheck(){
-  el.bigCheck.classList.remove('draw');
-  void el.bigCheck.offsetWidth;
-  el.bigCheck.classList.add('draw');
-}
+/* routing */
+function playBigCheck(){ el.bigCheck.classList.remove('draw'); void el.bigCheck.offsetWidth; el.bigCheck.classList.add('draw'); }
 function showPage(name){
   el.pageTugas.classList.toggle('is-active', name === 'tugas');
   el.pageVoucher.classList.toggle('is-active', name === 'voucher');
   el.pageExpired.classList.toggle('is-active', name === 'expired');
   el.pageLocked.classList.toggle('is-active', name === 'locked');
-  el.dock.style.display = (name === 'tugas') ? '' : 'none';
+  el.dock.style.display = name === 'tugas' ? '' : 'none';
   [el.pageTugas, el.pageVoucher, el.pageExpired].forEach(p => { p.scrollTop = 0; });
-
-  if (name === 'voucher'){ playBigCheck(); startTimer(); }
-  else { stopTimer(); }
+  if (name === 'voucher'){ playBigCheck(); startTimer(); } else stopTimer();
   updateWizard();
 }
 function route(){
-  let name = (location.hash || '').replace('#/','') || 'tugas';
-
-  // sudah diklaim (5x ketuk centang) -> selalu ke halaman terkunci
+  let name = (location.hash || '').replace('#/', '') || 'tugas';
   if (state.claimed || isClaimed()){
     if (location.hash !== '#/locked'){ location.replace('#/locked'); return; }
     name = 'locked';
   }
-
   if (name === 'voucher'){
-    ensureVoucherCreated();                 // voucher dibuat saat halaman voucher dibuka
-    if (isExpired()){
-      lockProgram();
-      if (location.hash !== '#/expired'){ location.hash = '#/expired'; return; }
-      name = 'expired';
-    }
+    ensureVoucherCreated();
+    if (isExpired()){ lockProgram(); if (location.hash !== '#/expired'){ location.hash = '#/expired'; return; } name = 'expired'; }
   }
   if (name === 'expired') lockProgram();
-
   showPage(name);
 }
-window.addEventListener('hashchange', route);
+addEventListener('hashchange', route);
 
-/* ============================================================
-   6. COUNTDOWN MASA BERLAKU
-   ============================================================ */
+/* countdown */
 function startTimer(){ stopTimer(); tickVoucher(); state.timer = setInterval(tickVoucher, 1000); }
 function stopTimer(){ if (state.timer){ clearInterval(state.timer); state.timer = null; } }
 function tickVoucher(){
@@ -1243,25 +584,17 @@ function tickVoucher(){
   if (remain <= 0){
     el.voucherCountdownText.textContent = 'Masa berlaku habis';
     el.voucherCountdown.classList.add('is-expired');
-    showExpired();
+    lockProgram(); if (location.hash !== '#/expired') location.hash = '#/expired';
     return;
   }
   el.voucherCountdown.classList.remove('is-expired');
   el.voucherCountdownText.textContent = 'Berlaku ' + fmtRemain(remain) + ' lagi';
 }
-function showExpired(){
-  lockProgram();
-  if (location.hash !== '#/expired') location.hash = '#/expired';
-}
 
-/* ============================================================
-   7. KLAIM VOUCHER — ketukan cepat pada logo centang
-   ============================================================ */
+/* klaim: ketukan cepat pada centang */
 function applyClaimState(claimed){
   state.claimed = claimed;
   el.claimStatus.classList.toggle('is-hidden', !claimed);
-  el.bigCheck.classList.toggle('is-claimed', claimed);
-
   if (claimed){
     lsSet(KEY.claimed, '1');
     el.voucherLead.textContent = 'Voucher Free Es Teh sudah ditandai telah diklaim. Tunjukkan halaman ini ke kasir untuk penukaran.';
@@ -1269,57 +602,16 @@ function applyClaimState(claimed){
 }
 function handleClaimClick(){
   if (state.claimed || isClaimed()) return;
-  if (isExpired()){ showExpired(); return; }
-
+  if (isExpired()){ lockProgram(); location.hash = '#/expired'; return; }
   const now = Date.now();
-  if (!state.lastClick || now - state.lastClick > CONFIG.claimWindowMs) state.clicks = 0; // jeda terlalu lama -> hitung ulang
-  state.lastClick = now;
-  state.clicks++;
-
-  // respons visual halus saja, tanpa membocorkan gesture
-  el.bigCheck.classList.remove('tap');
-  void el.bigCheck.offsetWidth;
-  el.bigCheck.classList.add('tap');
-
-  if (state.clicks >= CONFIG.claimClicks){
-    applyClaimState(true);
-    lockProgram();
-    location.hash = '#/locked';              // buka halaman terkunci
-  }
+  if (!state.lastClick || now - state.lastClick > CONFIG.claimWindowMs) state.clicks = 0;
+  state.lastClick = now; state.clicks++;
+  el.bigCheck.classList.remove('tap'); void el.bigCheck.offsetWidth; el.bigCheck.classList.add('tap');
+  if (state.clicks >= CONFIG.claimClicks){ applyClaimState(true); lockProgram(); location.hash = '#/locked'; }
 }
 
-/* ============================================================
-   8. EVENT UTAMA
-   ============================================================ */
-el.btnReview.addEventListener('click', openTutorial);
-el.btnTiktok.addEventListener('click', () => startTask('tiktok'));
-el.btnModalNext.addEventListener('click', closeModal);
-el.modal.addEventListener('click', (e) => { if (e.target === el.modal) closeModal(); });
-el.btnNext.addEventListener('click', () => { if (!isLocked()) location.hash = '#/voucher'; });
-
-// ketukan cepat pada logo centang
-el.bigCheck.addEventListener('click', handleClaimClick);
-
-// jika success.jpg tidak ditemukan, tampilkan teks pengganti
-$('#lockedImg').addEventListener('error', () => { $('#lockedFb').hidden = false; });
-
-el.btnBack.addEventListener('click', () => { location.hash = '#/tugas'; });
-el.btnExpiredBack.addEventListener('click', () => { location.hash = '#/tugas'; });
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && el.modal.classList.contains('is-open')) closeModal();
-  else if (e.key === 'Escape' && tut.root.classList.contains('is-open')) closeTutorial(false);
-});
-
-/* ============================================================
-   8b. TUTORIAL REVIEW — contoh tampilan + highlight 3 langkah
-       (tampil sebelum Google Maps dibuka di tab baru; isi halaman
-        Google sendiri tidak bisa disorot dari sini)
-   ============================================================ */
-const tut = {
-  root: $('#tut'), mock: $('#mock'), num: $('#tutNum'), cap: $('#tutCap'),
-  next: $('#tutNext'), skip: $('#tutSkip'), img: $('#tutImg'), step: 1
-};
+/* tutorial review */
+const tut = { root:$('#tut'), mock:$('#mock'), num:$('#tutNum'), cap:$('#tutCap'), next:$('#tutNext'), skip:$('#tutSkip'), img:$('#tutImg'), step:1 };
 const TUT_TEXT = [
   'Ketuk <strong>bintang</strong> sesuai penilaian Anda.',
   'Tulis pengalaman singkat Anda di <strong>kolom ulasan</strong>.',
@@ -1327,80 +619,71 @@ const TUT_TEXT = [
 ];
 tut.img.addEventListener('error', () => { tut.img.style.display = 'none'; });
 function tutRender(){
-  tut.mock.dataset.step = tut.step;
-  tut.num.textContent = tut.step + '/3';
+  tut.mock.dataset.step = tut.step; tut.num.textContent = tut.step + '/3';
   tut.cap.innerHTML = TUT_TEXT[tut.step - 1];
   tut.next.textContent = tut.step < 3 ? 'Lanjut' : 'Buka Google Maps';
 }
 function openTutorial(){
   if (state.done.review || isLocked()) return;
-  wizHide();
-  tut.step = 1; tutRender();
-  tut.root.classList.add('is-open');
-  lockScroll(true);
+  wizHide(); tut.step = 1; tutRender(); tut.root.classList.add('is-open'); lockScroll(true);
+  setTimeout(() => tut.next.focus(), 300);
 }
 function closeTutorial(go){
-  tut.root.classList.remove('is-open');
-  lockScroll(false);
+  tut.root.classList.remove('is-open'); lockScroll(false);
   if (go) startTask('review'); else updateWizard();
 }
-tut.next.addEventListener('click', () => {
-  if (tut.step < 3){ tut.step++; tutRender(); } else closeTutorial(true);
-});
+tut.next.addEventListener('click', () => { if (tut.step < 3){ tut.step++; tutRender(); } else closeTutorial(true); });
 tut.skip.addEventListener('click', () => closeTutorial(true));
-tut.root.addEventListener('click', (e) => { if (e.target === tut.root) closeTutorial(false); });
+tut.root.addEventListener('click', e => { if (e.target === tut.root) closeTutorial(false); });
 
-/* ============================================================
-   9. INIT
-   ============================================================ */
+/* event */
+el.btnReview.addEventListener('click', openTutorial);
+el.btnTiktok.addEventListener('click', () => startTask('tiktok'));
+el.btnModalNext.addEventListener('click', closeModal);
+el.modal.addEventListener('click', e => { if (e.target === el.modal) closeModal(); });
+el.btnNext.addEventListener('click', () => { if (!isLocked()) location.hash = '#/voucher'; });
+el.bigCheck.addEventListener('click', handleClaimClick);
+$('#lockedImg').addEventListener('error', () => { $('#lockedFb').hidden = false; });
+el.btnBack.addEventListener('click', () => { location.hash = '#/tugas'; });
+el.btnExpiredBack.addEventListener('click', () => { location.hash = '#/tugas'; });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (el.modal.classList.contains('is-open')) closeModal();
+  else if (tut.root.classList.contains('is-open')) closeTutorial(false);
+});
+
+/* init */
 (function init(){
-  // pulihkan progres tugas
   state.done.review = lsGet(KEY.taskReview) === '1';
   state.done.tiktok = lsGet(KEY.taskTiktok) === '1';
   if (state.done.review) el.taskReview.classList.add('is-done');
   if (state.done.tiktok) el.taskTiktok.classList.add('is-done');
-
-  // status klaim & kunci program
-  applyClaimState(isClaimed());
-  applyLockUI();
-  updateProgress();
-
-  // routing awal
+  applyClaimState(isClaimed()); applyLockUI(); updateProgress();
   if (!location.hash) location.hash = '#/tugas';
   route();
 })();
 
-/* ============================================================
-   10. LOADING SCREEN — putar start.mp4 sampai halaman siap
-       Tutup bila: halaman selesai dimuat DAN video selesai
-       (atau video gagal/diblokir, atau lewat CONFIG.bootMaxMs).
-       Setelah tertutup, wizard spotlight mulai.
-   ============================================================ */
+/* loading awal: mangkuk terisi mengikuti video; tutup saat halaman dan video selesai */
 (function boot(){
   const box = $('#boot'), vid = $('#bootVideo'), fill = $('#bootFill');
   let loaded = document.readyState === 'complete', vidDone = false, closed = false;
-
+  box.style.setProperty('--p', 0);
+  const setP = r => { fill.style.width = (r * 100).toFixed(1) + '%'; box.style.setProperty('--p', r.toFixed(3)); };
   function close(){
-    if (closed) return;
-    closed = true;
+    if (closed) return; closed = true;
     try { vid.pause(); } catch(e){}
-    box.classList.add('is-hide');
-    state.booted = true;
-    updateWizard();
+    setP(1); box.classList.add('is-hide'); state.booted = true; updateWizard();
     setTimeout(() => box.remove(), 700);
   }
-  function check(){ if (loaded && vidDone) close(); }
-
-  window.addEventListener('load', () => { loaded = true; check(); });
-  vid.addEventListener('timeupdate', () => {
-    if (vid.duration) fill.style.width = (vid.currentTime / vid.duration * 100).toFixed(1) + '%';
-  });
-  vid.addEventListener('ended', () => { fill.style.width = '100%'; vidDone = true; check(); });
+  const check = () => { if (loaded && vidDone) close(); };
+  addEventListener('load', () => { loaded = true; check(); });
+  vid.addEventListener('timeupdate', () => { if (vid.duration) setP(vid.currentTime / vid.duration); });
+  vid.addEventListener('ended', () => { setP(1); vidDone = true; check(); });
   vid.addEventListener('error', () => { vidDone = true; check(); });
-
-  const p = vid.play();
-  if (p && p.catch) p.catch(() => { vidDone = true; check(); });   // autoplay diblokir
-
+  const p = vid.play(); if (p && p.catch) p.catch(() => { vidDone = true; check(); });
+  /* tanpa video yang bisa diputar, isi mangkuk tetap naik perlahan agar loading tidak terlihat macet */
+  const t0 = performance.now();
+  (function idle(now){ if (closed || vid.duration) return; setP(Math.min(.9, (now - t0) / 3000)); requestAnimationFrame(idle); })(t0);
   setTimeout(() => { loaded = true; vidDone = true; check(); }, CONFIG.bootMaxMs);
 })();
 </script>
