@@ -469,6 +469,15 @@ a{color:inherit}
 }
 @keyframes wizBob{50%{transform:translateY(-4px)}}
 
+/* halaman terkunci: success.jpg (landscape) muat penuh di layar, latar tetap putih */
+#pageLocked{
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background:#fff;overflow:hidden;
+}
+.locked__img{display:block;width:100%;height:100%;object-fit:contain;background:#fff}
+.locked__fb{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-size:22px;font-weight:800;color:var(--accent-700)}
+.locked__fb[hidden]{display:none}
+
 @media (max-width:520px){
   .hero h1{font-size:22px}
   .task{flex-wrap:wrap}
@@ -686,6 +695,14 @@ a{color:inherit}
       </div>
     </div>
   </main>
+
+  <!-- ==========================================================
+       HALAMAN 4 — TERKUNCI (muncul setelah 5x ketuk centang)
+       ========================================================== -->
+  <main class="page" id="pageLocked" aria-label="Voucher sudah diklaim">
+    <img class="locked__img" id="lockedImg" src="success.jpg" alt="Voucher sudah diklaim" />
+    <p class="locked__fb" id="lockedFb" hidden>Voucher sudah diklaim</p>
+  </main>
 </div>
 
 <!-- ==========================================================
@@ -759,6 +776,7 @@ a{color:inherit}
    File pendukung (taruh satu folder dengan halaman ini):
      start.mp4      : video loading screen.
      pointchick.jpg : gambar penunjuk di wizard spotlight.
+     success.jpg    : gambar halaman terkunci (landscape, muat layar).
 
    Penyimpanan (localStorage, 100% client-side / serverless):
      smn_voucher_created_at : timestamp voucher dibuat (saat halaman
@@ -774,7 +792,8 @@ a{color:inherit}
    Gesture kasir/pemilik:
      Ketuk logo centang di halaman voucher CONFIG.claimClicks kali
      dengan jeda <= CONFIG.claimWindowMs -> halaman berstatus
-     "Halaman telah diklaim". Gesture ini sengaja tersembunyi.
+     halaman terkunci (#/locked) berisi success.jpg layar penuh.
+     Gesture ini sengaja tersembunyi.
 
    Batasan yang penting dipahami pemilik usaha:
      Status "sudah dipakai"/"belum dipakai" hanya tersimpan di
@@ -815,6 +834,7 @@ const el = {
   pageTugas   : $('#pageTugas'),
   pageVoucher : $('#pageVoucher'),
   pageExpired : $('#pageExpired'),
+  pageLocked  : $('#pageLocked'),
   steps       : $('#steps'),
   success     : $('#successPanel'),
   lockBanner  : $('#lockBanner'),
@@ -1136,6 +1156,7 @@ function showPage(name){
   el.pageTugas.classList.toggle('is-active', name === 'tugas');
   el.pageVoucher.classList.toggle('is-active', name === 'voucher');
   el.pageExpired.classList.toggle('is-active', name === 'expired');
+  el.pageLocked.classList.toggle('is-active', name === 'locked');
   el.dock.style.display = (name === 'tugas') ? '' : 'none';
   [el.pageTugas, el.pageVoucher, el.pageExpired].forEach(p => { p.scrollTop = 0; });
 
@@ -1145,6 +1166,12 @@ function showPage(name){
 }
 function route(){
   let name = (location.hash || '').replace('#/','') || 'tugas';
+
+  // sudah diklaim (5x ketuk centang) -> selalu ke halaman terkunci
+  if (state.claimed || isClaimed()){
+    if (location.hash !== '#/locked'){ location.replace('#/locked'); return; }
+    name = 'locked';
+  }
 
   if (name === 'voucher'){
     ensureVoucherCreated();                 // voucher dibuat saat halaman voucher dibuka
@@ -1211,7 +1238,7 @@ function handleClaimClick(){
   if (state.clicks >= CONFIG.claimClicks){
     applyClaimState(true);
     lockProgram();
-    toast('Voucher ditandai telah diklaim. Tunjukkan halaman ini ke kasir.');
+    location.hash = '#/locked';              // buka halaman terkunci
   }
 }
 
@@ -1226,6 +1253,9 @@ el.btnNext.addEventListener('click', () => { if (!isLocked()) location.hash = '#
 
 // ketukan cepat pada logo centang
 el.bigCheck.addEventListener('click', handleClaimClick);
+
+// jika success.jpg tidak ditemukan, tampilkan teks pengganti
+$('#lockedImg').addEventListener('error', () => { $('#lockedFb').hidden = false; });
 
 el.btnBack.addEventListener('click', () => { location.hash = '#/tugas'; });
 el.btnExpiredBack.addEventListener('click', () => { location.hash = '#/tugas'; });
